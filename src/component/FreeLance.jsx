@@ -230,9 +230,10 @@
                 <h3 className="text-xl font-bold mb-2 group-hover:text-blue-600 transition-colors">Landing Page</h3>
                 <div className="text-4xl font-black mb-6">₹499 </div>
                 <ul className="space-y-4 mb-8 text-slate-600 text-sm text-left">
-                    <li className="flex items-center"><span className="mr-2 text-blue-400">✓</span>Dark Mode Light Mode Support</li>
+                    <li className="flex items-center"><span className="mr-2 text-blue-400">✓</span>Seperate Design for dark and light  mode</li>
                     <li className="flex items-center"><span className="mr-2 text-green-500">✓</span> Fully Responsive Design</li>
                     <li className="flex items-center"><span className="mr-2 text-green-500">✓</span>unlimited pages</li>
+                    <li className="flex items-center"><span className="mr-2 text-blue-400">✓</span> 1 Month Support</li>
                 </ul>
             
             </div>
@@ -245,8 +246,8 @@
                 <ul className="space-y-4 mb-8 text-slate-300 text-sm text-left">
                     <li className="flex items-center"><span className="mr-2 text-blue-400">✓</span>Single Page</li>
                     <li className="flex items-center"><span className="mr-2 text-blue-400">✓</span>Responsive Design</li>
-                    <li className="flex items-center"><span className="mr-2 text-blue-400">✓</span>Dark Mode Light Mode Support</li>
-                    <li className="flex items-center"><span className="mr-2 text-blue-400">✓</span> 1 Month Support</li>
+                    <li className="flex items-center"><span className="mr-2 text-blue-400">✓</span>Seperate Design for dark and light  mode</li>
+                    
                 </ul>
             
             </div>
