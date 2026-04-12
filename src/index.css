@@ -1,0 +1,59 @@
+.h100vh{
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-top:20% ;
+}
+.pointer{
+    cursor: pointer;
+}
+/* Style tag kulla add pannunga */
+.price-card {
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.price-card:hover {
+    transform: translateY(-15px);
+    box-shadow: 0 25px 50px -12px rgba(59, 130, 246, 0.25);
+}
+ ::-webkit-scrollbar {
+                width: 8px;
+                height: 8px;
+            }
+            ::-webkit-scrollbar-track {
+                background: transparent;
+            }
+            ::-webkit-scrollbar-thumb {
+                background: #475569;
+                border-radius: 10px;
+                border: 2px solid transparent;
+                background-clip: content-box;
+            }
+            ::-webkit-scrollbar-thumb:hover {
+                background: #3b82f6;
+            }
+            * {
+                scrollbar-width: thin;
+                scrollbar-color: #475569 transparent;
+                scroll-behavior: smooth;
+            }
+
+.typing-cursor::after {
+    content: "|";
+    animation: blink 1s step-end infinite;
+    margin-left: 2px;
+}
+
+@keyframes blink {
+    from, to { opacity: 1; }
+    50% { opacity: 0; }
+}
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-on-scroll {
+    animation: fadeIn 0.8s ease-out forwards;
+}
