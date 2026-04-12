@@ -105,7 +105,7 @@
                 <div className="grid lg:grid-cols-2 gap-12 items-center">
                     <div className="text-left z-10">
                         <span data-aos="zoom-out" data-aos-delay='200' className="inline-block py-1 px-3 rounded-full bg-blue-50 text-blue-600 text-sm font-bold mb-6">
-                            AVAILABLE FOR NEW PROJECTS
+                            AVAILABLE FOR PROJECTS
                         </span>
                         <h1  data-aos="zoom-out" data-aos-delay='400' className="text-5xl md:text-7xl font-extrabold tracking-tight text-slate-900 mb-8 leading-[1.1]">
                             Building Digital <br />
