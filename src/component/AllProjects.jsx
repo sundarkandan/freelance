@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import AIBuilder from './AIBuilder.png';
@@ -8,6 +8,10 @@ import mern_Portfolio from "./mern_portfolio.png"
 import food_landing from "./food_landing.png"
 
 const AllProjects = () => {
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
+
     const [searchTerm, setSearchTerm] = useState("");
     const [activeCategory, setActiveCategory] = useState("All");
 
