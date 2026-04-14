@@ -4,6 +4,7 @@ import './App.css'
 import FreeLance from "./component/FreeLance"
 import AOS from 'aos';
 import 'aos/dist/aos.css';
+import AllProjects from './component/AllProjects';
 function App() {
 useEffect(() => {
 AOS.init({
@@ -19,6 +20,7 @@ delay: 100,
     
       <Routes>
         <Route path='/' element={<FreeLance/>}/>
+        <Route path='/projects' element={<AllProjects/>}/>
       </Routes>
     </>
   )
