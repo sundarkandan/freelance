@@ -261,7 +261,6 @@ import { Link } from 'react-router-dom';
                     <li className="flex items-center"><span className="mr-2 text-blue-400">✓</span>Dark Mode Light Mode Support</li>
                     <li className="flex items-center"><span className="mr-2 text-green-500">✓</span> Fully Responsive Design</li>
                     <li className="flex items-center"><span className="mr-2 text-green-500">✓</span>unlimited pages</li>
-                     <li className="flex items-center"><span className="mr-2 text-blue-400">✓</span> 1 Month Support</li>
                 </ul>
             
             </div>
