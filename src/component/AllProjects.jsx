@@ -14,48 +14,43 @@ const AllProjects = () => {
     const allProjects = [
         {
             id: 1,
-            name: "AI Powered Website Designer",
+            name: "AI Website Designer",
             img: AIBuilder, 
-            dis: "A high-performance AI engine that generates landing pages based on user prompts.",
-           tags: ["MONGO DB","Expres.js","react.js","node.js","tailwind.css"],
+            dis: "High-performance AI engine generating professional landing pages via prompts.",
+            tags: ["MongoDB", "React", "Node"],
             category: "Full Stack",
-            access:"gitHub"
         },
         {
             id: 2,
-            name: "Movie Ticket Booking system",
+            name: "Movie Booking Pro",
             img: movie,
-            dis: "book your tickets and manage the booked tickets",
-            tags: ["MONGO DB","Expres.js","react.js","node.js"],
+            dis: "Real-time seat selection and ticket management system with secure checkout.",
+            tags: ["React", "Express", "Node"],
             category: "Full Stack",
-            access:"gitHub"
         },
         {
             id: 3,
-            name: "Attendance system",
+            name: "Attendance Master",
             img: att,
-            dis: "Manage the students attendace",
-            tags: ["MONGO DB","Expres.js","react.js","node.js"],
+            dis: "Smart student tracking system with automated reporting and analytics.",
+            tags: ["MongoDB", "Node", "Tailwind"],
             category: "Full Stack",
-            access:"gitHub"
         },
         {
             id: 4,
-            name: "Food Shop",
+            name: "Gourmet Shop",
             img: food_landing,
-            dis: "Landing page for food shop ",
-            tags: ["React","tailwind.css"],
+            dis: "Premium food delivery landing page with high-conversion UI elements.",
+            tags: ["React", "tailwind"],
             category: "Landing Page",
-            access:"gitHub"
         },
-         {
-            id: 4,
-            name: "Mern stack developer",
+        {
+            id: 5,
+            name: "Developer Portfolio",
             img: mern_Portfolio,
-            dis: "Portfolio for mern stack developer ",
-            tags: ["React","tailwind.css"],
+            dis: "A sleek, dark-themed showcase for full-stack developers and creators.",
+            tags: ["React", "Tailwind"],
             category: "Portfolio",
-            access:"gitHub"
         }
     ];
 
@@ -68,109 +63,106 @@ const AllProjects = () => {
     const categories = ["All", "Full Stack", "Landing Page", "Portfolio"];
 
     return (
-        <div className="min-h-screen bg-[#fcfcfd] text-slate-900 font-sans selection:bg-blue-100">
-            {/* Minimal Nav */}
-            <nav className="sticky top-0 z-50 bg-white/70 backdrop-blur-xl border-b border-slate-100">
-                <div className="max-w-7xl mx-auto px-8 h-20 flex items-center justify-between">
-                    <Link to="/" className="group flex items-center gap-2 text-sm font-semibold text-slate-500 hover:text-slate-900 transition-colors">
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 transition-transform group-hover:-translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M15 19l-7-7 7-7" />
-                        </svg>
+        <div className="min-h-screen bg-[#f8fafc] text-slate-900 font-sans">
+            {/* Sticky Navbar */}
+            <nav className="sticky top-0 z-50 bg-white/80 backdrop-blur-xl border-b-2 border-slate-200">
+                <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+                    <Link to="/" className="group flex items-center gap-3 text-sm font-bold text-slate-800 uppercase tracking-tight">
+                        <div className="p-2 bg-slate-900 text-white rounded-xl group-hover:bg-blue-600 transition-all">
+                            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M15 19l-7-7 7-7" />
+                            </svg>
+                        </div>
                         Back
                     </Link>
-                    <div className="text-[10px] font-black tracking-[0.3em] uppercase text-slate-300">Archive / 2026</div>
+                    <div className="text-[11px] font-black tracking-[0.3em] uppercase text-slate-400">Archive / 2026</div>
                 </div>
             </nav>
 
-            <main className="max-w-7xl mx-auto px-8 py-24">
-                {/* Header Section */}
-                <header className="max-w-2xl mb-20">
-                    <h1 className="text-6xl font-bold tracking-tight text-slate-900 mb-8 leading-[1.1]">
-                        Selected <br />
-                        <span className="text-slate-400 font-medium">Works</span>
-                    </h1>
-                    <p className="text-xl text-slate-500 font-medium leading-relaxed">
-                        A curation of projects focused on interaction, interface, and clean architecture.
-                    </p>
+            <main className="max-w-7xl mx-auto px-6 py-16">
+                <header className="mb-20">
+                    <motion.h1 
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        className="text-6xl md:text-7xl font-black tracking-tighter text-slate-900 mb-4"
+                    >
+                        Project <span className="text-blue-600">Gallery</span>
+                    </motion.h1>
+                    <p className="text-slate-500 font-medium text-lg">Detailed overview of my technical implementations.</p>
                 </header>
 
-                {/* Professional Filter & Search Bar */}
-                <div className="flex flex-col lg:flex-row gap-8 mb-20 items-start lg:items-center justify-between">
-                    {/* Segmented Control Filter */}
-                    <div className="bg-slate-100/50 p-1.5 rounded-2xl flex items-center gap-1 border border-slate-200/50">
+                {/* Filters & Search */}
+                <div className="flex flex-col md:flex-row gap-8 mb-16 items-center justify-between">
+                    <div className="flex p-1.5 bg-slate-200/50 rounded-2xl gap-1">
                         {categories.map((tab) => (
                             <button 
                                 key={tab} 
                                 onClick={() => setActiveCategory(tab)}
-                                className={`relative px-6 py-2.5 rounded-xl text-sm font-semibold transition-all duration-300 ${
-                                    activeCategory === tab ? "text-slate-900" : "text-slate-500 hover:text-slate-700"
+                                className={`px-6 py-2.5 rounded-xl text-sm font-bold transition-all ${
+                                    activeCategory === tab 
+                                    ? "bg-white text-blue-600 shadow-md" 
+                                    : "text-slate-500 hover:text-slate-800"
                                 }`}
                             >
-                                {activeCategory === tab && (
-                                    <motion.div 
-                                        layoutId="activePill"
-                                        className="absolute inset-0 bg-white shadow-[0_4px_12px_rgba(0,0,0,0.05)] rounded-xl"
-                                        transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
-                                    />
-                                )}
-                                <span className="relative z-10">{tab}</span>
+                                {tab}
                             </button>
                         ))}
                     </div>
 
-                    {/* Search Field */}
-                    <div className="relative w-full lg:w-80 group">
+                    <div className="relative w-full md:w-80">
                         <input 
                             type="text" 
-                            placeholder="Find a project..."
-                            className="w-full bg-slate-100/50 border border-transparent rounded-2xl px-5 py-3 pl-12 text-sm focus:bg-white focus:border-blue-500/20 focus:ring-4 focus:ring-blue-500/5 outline-none transition-all placeholder:text-slate-400 font-medium"
+                            placeholder="Search by title..."
+                            className="w-full bg-white border-2 border-slate-200 rounded-2xl px-6 py-3.5 text-sm focus:border-blue-500 transition-all outline-none shadow-sm"
                             onChange={(e) => setSearchTerm(e.target.value)}
                         />
-                        <svg className="h-5 w-5 absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-blue-500 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                        </svg>
                     </div>
                 </div>
 
-                {/* Project Grid */}
-                <motion.div layout className="grid md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-16">
+                {/* Grid */}
+                <motion.div layout className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                     <AnimatePresence mode='popLayout'>
                         {filteredProjects.map((project) => (
                             <motion.div 
                                 layout
                                 key={project.id}
-                                initial={{ opacity: 0, y: 20 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                exit={{ opacity: 0, scale: 0.95 }}
-                                transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-                                className="group cursor-pointer"
+                                initial={{ opacity: 0, scale: 0.95 }}
+                                animate={{ opacity: 1, scale: 1 }}
+                                exit={{ opacity: 0, scale: 0.9 }}
+                                whileHover={{ y: -8 }}
+                                className="group bg-white rounded-[2.5rem] overflow-hidden border-2 border-slate-200 hover:border-blue-500/50 shadow-sm hover:shadow-xl hover:shadow-blue-500/5 transition-all duration-400"
                             >
-                                {/* Subtle Image Card */}
-                                <div className="relative aspect-[4/3] overflow-hidden rounded-[2rem] bg-slate-100 mb-8 border border-slate-200/50">
-                                    <img 
-                                        src={project.img} 
-                                        alt={project.name} 
-                                        className="w-full h-full object-cover grayscale-[30%] group-hover:grayscale-0 transition-all duration-700 ease-out group-hover:scale-105" 
-                                    />
-                                    
+                                {/* Image Section */}
+                                <div className="p-3">
+                                    <div className="relative aspect-[16/11] overflow-hidden rounded-[2rem] bg-slate-50 border border-slate-100">
+                                        <img 
+                                            src={project.img} 
+                                            alt={project.name} 
+                                            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" 
+                                        />
+                                        <div className="absolute bottom-4 left-4">
+                                            <span className="bg-slate-900/90 backdrop-blur text-white text-[10px] font-bold uppercase tracking-widest px-4 py-1.5 rounded-full">
+                                                {project.category}
+                                            </span>
+                                        </div>
+                                    </div>
                                 </div>
 
                                 {/* Content Section */}
-                                <div className="space-y-4 px-2">
-                                    <div className="flex items-center gap-3">
-                                        <span className="text-[10px] font-black tracking-widest uppercase text-blue-600 bg-blue-50/50 px-3 py-1 rounded-lg">
-                                            {project.category}
-                                        </span>
-                                    </div>
-                                    <h3 className="text-2xl font-bold text-slate-900 tracking-tight leading-none group-hover:text-blue-600 transition-colors">
+                                <div className="px-8 pb-10 pt-4">
+                                    <h3 className="text-2xl font-black tracking-tight text-slate-900 mb-3 group-hover:text-blue-600 transition-colors">
                                         {project.name}
                                     </h3>
-                                    <p className="text-slate-500 text-base leading-relaxed font-medium line-clamp-2">
+                                    
+                                    <p className="text-slate-500 text-sm leading-relaxed mb-6 font-medium line-clamp-2">
                                         {project.dis}
                                     </p>
-                                    <div className="flex flex-wrap gap-x-4 pt-2">
+                                    
+                                    <div className="flex flex-wrap gap-2">
                                         {project.tags.map(tag => (
-                                            <span key={tag} className="text-xs font-bold text-slate-300">#{tag}</span>
+                                            <span key={tag} className="text-[11px] font-bold text-slate-600 bg-slate-100 px-3 py-1.5 rounded-xl border border-slate-200 group-hover:border-blue-200 group-hover:bg-blue-50 transition-colors">
+                                                {tag}
+                                            </span>
                                         ))}
                                     </div>
                                 </div>
@@ -180,8 +172,8 @@ const AllProjects = () => {
                 </motion.div>
             </main>
 
-            <footer className="max-w-7xl mx-auto px-8 py-20 border-t border-slate-100">
-                <p className="text-slate-400 text-sm font-medium">© 2026 / Crafted by Sundar</p>
+            <footer className="py-20 text-center border-t-2 border-slate-100 mt-20">
+                <p className="text-slate-400 font-black text-[10px] uppercase tracking-[0.4em]">© 2026 Crafted by Sundar</p>
             </footer>
         </div>
     );
