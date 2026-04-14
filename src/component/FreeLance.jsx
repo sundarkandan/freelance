@@ -7,6 +7,7 @@
     import movie from './movie.png'
    import AOS from 'aos';
     import 'aos/dist/aos.css';
+import { Link } from 'react-router-dom';
     const FreeLance = () => {
         // AOS Initialization
     useEffect(() => {
@@ -185,35 +186,62 @@
 
         {/* Projects Section */}
         <section id="projects" className="py-24 px-6 bg-slate-50">
-            <div className="max-w-7xl mx-auto">
-                <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-4">
-                    <div>
-                        <h2 className="text-4xl font-bold mb-4">Featured Projects</h2>
-                        <p className="text-slate-600">A selection of my recent works across different industries.</p>
-                    </div>
-                  
-                </div>
-                <div className="grid md:grid-cols-3 gap-8">
-                    {[{name:"AI Powered Website Designer",img:AIBuilder,dis:"Build Your Website Designs"}, {name:"Movie Ticket Booking",img:movie,dis:"book your tickets and manage the booked tickets"}, {name:"college attendance system",img:att, dis:"Manage the students attendace"}].map((item,idx) => (
-                        <div data-aos="fade-up" data-aos-delay={idx*200} key={item} className="group bg-white rounded-2xl overflow-hidden border border-slate-200 hover:shadow-xl transition-all duration-300">
-                            <div className="h-56 bg-slate-200 relative overflow-hidden">
-                                <div className="absolute inset-0 bg-blue-600/10 group-hover:bg-transparent transition-colors"></div>
-                                <img src={item.img} alt="Project" className="w-full h-full object-cover" />
-                            </div>
-                            <div className="p-6">
-                                <div className="flex gap-2 mb-4">
-                                    <span className="text-[10px] font-bold tracking-widest uppercase py-1 px-2 bg-blue-50 text-blue-600 rounded">React</span>
-                                    <span className="text-[10px] font-bold tracking-widest uppercase py-1 px-2 bg-slate-100 text-slate-600 rounded">Node.js</span>
-                                </div>
-                                <h3 className="text-xl font-bold mb-2">{item.name}</h3>
-                                <p className="text-slate-600 text-sm mb-4">{item.dis}</p>
-                            
-                            </div>
-                        </div>
-                    ))}
-                </div>
+    <div className="max-w-7xl mx-auto">
+        {/* Header Section */}
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-4">
+            <div>
+                <h2 className="text-4xl font-bold mb-4">Featured Projects</h2>
+                <p className="text-slate-600">A selection of my recent works across different industries.</p>
             </div>
-        </section>
+            
+            {/* View All Projects Link */}
+            <Link 
+                to="/projects" 
+                className="group flex items-center gap-2 text-blue-600 font-semibold hover:text-blue-700 transition-colors"
+            >
+                View All Projects
+                <svg 
+                    xmlns="http://www.w3.org/2000/svg" 
+                    className="h-5 w-5 group-hover:translate-x-1 transition-transform" 
+                    fill="none" 
+                    viewBox="0 0 24 24" 
+                    stroke="currentColor"
+                >
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                </svg>
+            </Link>
+        </div>
+
+        {/* Projects Grid */}
+        <div className="grid md:grid-cols-3 gap-8">
+            {[
+                {name:"AI Powered Website Designer", img:AIBuilder, dis:"Build Your Website Designs"}, 
+                {name:"Movie Ticket Booking", img:movie, dis:"book your tickets and manage the booked tickets"}, 
+                {name:"college attendance system", img:att, dis:"Manage the students attendace"}
+            ].map((item, idx) => (
+                <div 
+                    data-aos="fade-up" 
+                    data-aos-delay={idx * 200} 
+                    key={item.name} 
+                    className="group bg-white rounded-2xl overflow-hidden border border-slate-200 hover:shadow-xl transition-all duration-300"
+                >
+                    <div className="h-56 bg-slate-200 relative overflow-hidden">
+                        <div className="absolute inset-0 bg-blue-600/10 group-hover:bg-transparent transition-colors"></div>
+                        <img src={item.img} alt={item.name} className="w-full h-full object-cover" />
+                    </div>
+                    <div className="p-6">
+                        <div className="flex gap-2 mb-4">
+                            <span className="text-[10px] font-bold tracking-widest uppercase py-1 px-2 bg-blue-50 text-blue-600 rounded">React</span>
+                            <span className="text-[10px] font-bold tracking-widest uppercase py-1 px-2 bg-slate-100 text-slate-600 rounded">Node.js</span>
+                        </div>
+                        <h3 className="text-xl font-bold mb-2">{item.name}</h3>
+                        <p className="text-slate-600 text-sm mb-4">{item.dis}</p>
+                    </div>
+                </div>
+            ))}
+        </div>
+    </div>
+</section>
 
         {/* Pricing Section */}
         {/* Pricing Section */}
@@ -226,14 +254,14 @@
         <div className="max-w-7xl mx-auto grid md:grid-cols-3 gap-8 items-center">
             
             {/* Basic Plan */}
-            <div className="price-card p-8 rounded-3xl border border-slate-200 bg-white group hover:border-blue-400" data-aos="fade-up"  data-aos-delay={200} >
+            <div className="price-card p-8 rounded-3xl border border-slate-200 bg-white group hover:border-blue-400" data-aos="fade-up"  >
                 <h3 className="text-xl font-bold mb-2 group-hover:text-blue-600 transition-colors">Landing Page</h3>
                 <div className="text-4xl font-black mb-6">₹499 </div>
                 <ul className="space-y-4 mb-8 text-slate-600 text-sm text-left">
-                    <li className="flex items-center"><span className="mr-2 text-blue-400">✓</span>Seperate Design for dark and light  mode</li>
-                    <li className="flex items-center"><span className="mr-2 text-green-500">✓</span>Fully Responsive Design</li>
+                    <li className="flex items-center"><span className="mr-2 text-blue-400">✓</span>Dark Mode Light Mode Support</li>
+                    <li className="flex items-center"><span className="mr-2 text-green-500">✓</span> Fully Responsive Design</li>
                     <li className="flex items-center"><span className="mr-2 text-green-500">✓</span>unlimited pages</li>
-                    <li className="flex items-center"><span className="mr-2 text-blue-400">✓</span> 1 Month Support</li>
+                     <li className="flex items-center"><span className="mr-2 text-blue-400">✓</span> 1 Month Support</li>
                 </ul>
             
             </div>
@@ -245,18 +273,18 @@
                 <div className="text-4xl font-black mb-6">₹199</div>
                 <ul className="space-y-4 mb-8 text-slate-300 text-sm text-left">
                     <li className="flex items-center"><span className="mr-2 text-blue-400">✓</span>Single Page</li>
-                    <li className="flex items-center"><span className="mr-2 text-blue-400">✓</span>Fully Responsive Design</li>
-                    <li className="flex items-center"><span className="mr-2 text-blue-400">✓</span>Seperate Design for dark and light  mode</li>
-                    
+                    <li className="flex items-center"><span className="mr-2 text-blue-400">✓</span>Responsive Design</li>
+                    <li className="flex items-center"><span className="mr-2 text-blue-400">✓</span>Dark Mode Light Mode Support</li>
+                   
                 </ul>
             
             </div>
             {/* Enterprise Plan */}
             <div  data-aos="fade-up"  data-aos-delay={300} className="price-card p-8 rounded-3xl border border-slate-200 bg-white group hover:border-indigo-400">
-                <h3 className="text-xl font-bold mb-2 group-hover:text-indigo-600 transition-colors">Entire Website</h3>
-                <div className="text-4xl font-black mb-6">₹999 <span className="text-sm font-medium text-slate-400">+hosting charges</span></div>
+                <h3 className="text-xl font-bold mb-2 group-hover:text-indigo-600 transition-colors">Enterprise</h3>
+                <div className="text-4xl font-black mb-6">₹999 <span className="text-sm font-medium text-slate-400">+hosting</span></div>
                 <ul className="space-y-4 mb-8 text-slate-600 text-sm text-left">
-                    <li className="flex items-center"><span className="mr-2 text-indigo-500">✓</span>Unlimited Pages</li>
+                    <li className="flex items-center"><span className="mr-2 text-indigo-500">✓</span> Unlimited Pages</li>
                     <li className="flex items-center"><span className="mr-2 text-indigo-500">✓</span>Custom Admin Dashboard</li>
                     <li className="flex items-center"><span className="mr-2 text-indigo-500">✓</span> Database Setup (MongoDB)</li>
                     <li className="flex items-center"><span className="mr-2 text-indigo-500">✓</span> 6 month support</li>
