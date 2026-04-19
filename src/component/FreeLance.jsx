@@ -1,30 +1,39 @@
     import React from 'react';
     import { useState,useRef,useEffect } from 'react';
-
     import Img from './sundar.jpeg'
     import AIBuilder from './AIBuilder.png'
     import att from './attendance.png'
     import movie from './movie.png'
    import AOS from 'aos';
     import 'aos/dist/aos.css';
-import { Link } from 'react-router-dom';
+    import axios from 'axios'
+    import { Link } from 'react-router-dom';
     const FreeLance = () => {
-        // AOS Initialization
-    useEffect(() => {
+        const server=import.meta.env.VITE_SERVER
+         const [Projects,setProjects]=useState([])
+   
+        const [isMenuOpen, setIsMenuOpen] = useState(false)
+    const form = useRef();
+    useEffect(()=>{
+        axios.get(server).then(res=>{
+            setProjects(res.data)
+            console.log(res.data)
+        })
+    },[])
+    const TypedText = ({ words }) => {
+    const [index, setIndex] = React.useState(0);
+    const [subIndex, setSubIndex] = React.useState(0);
+    const [reverse, setReverse] = React.useState(false);
+
+   useEffect(() => {
         AOS.init({
             duration: 1000,
        
            
         });
     }, []);
-        const [isMenuOpen, setIsMenuOpen] = useState(false)
-    const form = useRef();
-    const TypedText = ({ words }) => {
-    const [index, setIndex] = React.useState(0);
-    const [subIndex, setSubIndex] = React.useState(0);
-    const [reverse, setReverse] = React.useState(false);
 
-    // Typing logic
+    
     React.useEffect(() => {
         if (subIndex === words[index].length + 1 && !reverse) {
         setTimeout(() => setReverse(true), 2000); // Wait before deleting
@@ -214,12 +223,10 @@ import { Link } from 'react-router-dom';
 
         {/* Projects Grid */}
         <div className="grid md:grid-cols-3 gap-8">
-            {[
-                {name:"AI Powered Website Designer", img:AIBuilder, dis:"Build Your Website Designs"}, 
-                {name:"Movie Ticket Booking", img:movie, dis:"book your tickets and manage the booked tickets"}, 
-                {name:"college attendance system", img:att, dis:"Manage the students attendace"}
-            ].map((item, idx) => (
-                <div 
+            {Projects.map((item, idx) => 
+              {
+               return(
+                 item.status==true? <div 
                     data-aos="fade-up" 
                     data-aos-delay={idx * 200} 
                     key={item.name} 
@@ -237,8 +244,10 @@ import { Link } from 'react-router-dom';
                         <h3 className="text-xl font-bold mb-2">{item.name}</h3>
                         <p className="text-slate-600 text-sm mb-4">{item.dis}</p>
                     </div>
-                </div>
-            ))}
+                </div>:""
+               )
+              }
+            )}
         </div>
     </div>
 </section>
