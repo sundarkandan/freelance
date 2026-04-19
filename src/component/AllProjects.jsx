@@ -1,33 +1,70 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import axios from 'axios';
+import AIBuilder from './AIBuilder.png';
+import att from './attendance.png';
+import movie from './movie.png';
+import mern_Portfolio from "./mern_portfolio.png"
+import food_landing from "./food_landing.png"
+
 const AllProjects = () => {
     useEffect(() => {
         window.scrollTo(0, 0);
     }, []);
- const server=import.meta.env.VITE_SERVER
 
-   
     const [searchTerm, setSearchTerm] = useState("");
     const [activeCategory, setActiveCategory] = useState("All");
 
-
-    const [allProjects,setProjects]=useState([])
-    
+    const allProjects = [
+        {
+            id: 1,
+            name: "AI Website Designer",
+            img: AIBuilder, 
+            dis: "High-performance AI engine generating professional landing pages via prompts.",
+            tags: ["MongoDB", "React", "Node"],
+            category: "Full Stack",
+        },
+        {
+            id: 2,
+            name: "Movie Booking Pro",
+            img: movie,
+            dis: "Real-time seat selection and ticket management system with secure checkout.",
+            tags: ["React", "Express", "Node"],
+            category: "Full Stack",
+        },
+        {
+            id: 3,
+            name: "Attendance Master",
+            img: att,
+            dis: "Smart student tracking system with automated reporting and analytics.",
+            tags: ["MongoDB", "Node", "Tailwind"],
+            category: "Full Stack",
+        },
+        {
+            id: 4,
+            name: "Gourmet Shop",
+            img: food_landing,
+            dis: "Premium food delivery landing page with high-conversion UI elements.",
+            tags: ["React", "tailwind"],
+            category: "Landing Page",
+        },
+        {
+            id: 5,
+            name: "Developer Portfolio",
+            img: mern_Portfolio,
+            dis: "A sleek, dark-themed showcase for full-stack developers and creators.",
+            tags: ["React", "Tailwind"],
+            category: "Portfolio",
+        }
+    ];
 
     const filteredProjects = allProjects.filter(project => {
         const matchesSearch = project.name.toLowerCase().includes(searchTerm.toLowerCase());
         const matchesCategory = activeCategory === "All" || project.category === activeCategory;
         return matchesSearch && matchesCategory;
     });
- useEffect(()=>{
-        axios.get(server).then(res=>{
-            setProjects(res.data)
-            console.log(res.data)
-        })
-    },[])
-    const categories = ["All", "full_stack", "landing_page", "portfolio"];
+
+    const categories = ["All", "Full Stack", "Landing Page", "Portfolio"];
 
     return (
         <div className="min-h-screen bg-[#f8fafc] text-slate-900 font-sans">
@@ -42,7 +79,7 @@ const AllProjects = () => {
                         </div>
                         Back
                     </Link>
-                    <div className="text-[11px] font-black tracking-[0.3em] uppercase text-slate-400">Total project count is :{allProjects.length}</div>
+                    <div className="text-[11px] font-black tracking-[0.3em] uppercase text-slate-400">Archive / 2026</div>
                 </div>
             </nav>
 
