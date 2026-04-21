@@ -170,7 +170,7 @@ import { Link } from 'react-router-dom';
                         <div className="absolute -top-6 -left-6 w-32 h-32 bg-indigo-50 rounded-full -z-0"></div>
                     </div>
                     <div data-aos="fade-up">
-                        <h2 className="text-4xl font-bold mb-6">Hi, Iam sundar a Professional</h2>
+                        <h2 className="text-4xl font-bold mb-6">Hi, I am sundar a Professional</h2>
                         {/* About Section-la intha edathula update pannunga */}
     <div className="text-3xl font-mono font-bold text-blue-600 mb-6 flex items-center">
         <TypedText words={["Full Stack Developer", "MERN Stack Expert", "Freelance Web Builder"]} />
