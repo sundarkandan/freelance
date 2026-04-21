@@ -281,7 +281,7 @@ import { Link } from 'react-router-dom';
             </div>
             {/* Enterprise Plan */}
             <div  data-aos="fade-up"  data-aos-delay={300} className="price-card p-8 rounded-3xl border border-slate-200 bg-white group hover:border-indigo-400">
-                <h3 className="text-xl font-bold mb-2 group-hover:text-indigo-600 transition-colors">Enterprise</h3>
+                <h3 className="text-xl font-bold mb-2 group-hover:text-indigo-600 transition-colors">Full Stack</h3>
                 <div className="text-4xl font-black mb-6">₹999 <span className="text-sm font-medium text-slate-400">+hosting charges</span></div>
                 <ul className="space-y-4 mb-8 text-slate-600 text-sm text-left">
                     <li className="flex items-center"><span className="mr-2 text-indigo-500">✓</span> Unlimited Pages</li>
