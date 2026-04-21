@@ -16,7 +16,9 @@
     typing 3.5s steps(30, end) infinite,
     blink-caret .5s step-end infinite;
 }
-
+.borders{
+  border-radius: 10px;
+}
 @keyframes typing {
   0% { width: 0 }
   50% { width: 100% }

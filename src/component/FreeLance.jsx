@@ -6,6 +6,7 @@
     import att from './attendance.png'
     import movie from './movie.png'
    import AOS from 'aos';
+   import About from "./about.jpeg"
     import 'aos/dist/aos.css';
 import { Link } from 'react-router-dom';
     const FreeLance = () => {
@@ -120,11 +121,11 @@ import { Link } from 'react-router-dom';
                     </div>
                     
                     <div className="relative" data-aos="zoom-out" data-aos-delay='1000'>
-                        <div className="relative z-10 floating">
+                        <div className="w-full aspect-square rounded-3xl bg-slate-100 overflow-hidden relative z-10 border-8 border-white shadow-2xl">
                             <img 
-                                src="https://illustrations.popsy.co/blue/remote-work.svg" 
-                                alt="Freelance Development Illustration" 
-                                className="w-full h-auto drop-shadow-[0_35px_35px_rgba(59,130,246,0.2)]"
+                                src={Img}
+                                alt="Profile" 
+                                className="w-full borders h-full object-cover grayscale hover:grayscale-0 transition-all duration-500"
                             />
                         </div>
                         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-blue-100/40 rounded-full blur-3xl -z-0"></div>
@@ -160,9 +161,9 @@ import { Link } from 'react-router-dom';
                     <div className="relative"  data-aos="fade-up">
                         <div className="w-full aspect-square rounded-3xl bg-slate-100 overflow-hidden relative z-10 border-8 border-white shadow-2xl">
                             <img 
-                                src={Img}
+                                src={About}
                                 alt="Profile" 
-                                className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500"
+                                className="w-full borders h-full object-cover grayscale hover:grayscale-0 transition-all duration-500"
                             />
                         </div>
                         <div className="absolute -bottom-6 -right-6 w-48 h-48 bg-blue-100 rounded-3xl -z-0"></div>
@@ -256,7 +257,7 @@ import { Link } from 'react-router-dom';
             {/* Basic Plan */}
             <div className="price-card p-8 rounded-3xl border border-slate-200 bg-white group hover:border-blue-400" data-aos="fade-up"  >
                 <h3 className="text-xl font-bold mb-2 group-hover:text-blue-600 transition-colors">Landing Page</h3>
-                <div className="text-4xl font-black mb-6">₹499 </div>
+                <div className="text-4xl font-black mb-6">₹499  <span className="text-sm font-medium text-slate-400">+hosting charges</span></div>
                 <ul className="space-y-4 mb-8 text-slate-600 text-sm text-left">
                     <li className="flex items-center"><span className="mr-2 text-blue-400">✓</span>Dark Mode Light Mode Support</li>
                     <li className="flex items-center"><span className="mr-2 text-green-500">✓</span> Fully Responsive Design</li>
@@ -281,7 +282,7 @@ import { Link } from 'react-router-dom';
             {/* Enterprise Plan */}
             <div  data-aos="fade-up"  data-aos-delay={300} className="price-card p-8 rounded-3xl border border-slate-200 bg-white group hover:border-indigo-400">
                 <h3 className="text-xl font-bold mb-2 group-hover:text-indigo-600 transition-colors">Enterprise</h3>
-                <div className="text-4xl font-black mb-6">₹999 <span className="text-sm font-medium text-slate-400">+hosting</span></div>
+                <div className="text-4xl font-black mb-6">₹999 <span className="text-sm font-medium text-slate-400">+hosting charges</span></div>
                 <ul className="space-y-4 mb-8 text-slate-600 text-sm text-left">
                     <li className="flex items-center"><span className="mr-2 text-indigo-500">✓</span> Unlimited Pages</li>
                     <li className="flex items-center"><span className="mr-2 text-indigo-500">✓</span>Custom Admin Dashboard</li>
