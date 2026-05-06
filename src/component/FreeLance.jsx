@@ -1,5 +1,13 @@
 import { useState, useEffect, useRef } from "react";
-
+import Profile from "./sundar.jpeg"
+import About from "./about.jpeg"
+import { useNavigate } from "react-router-dom";
+import students from "./attendance.png"
+import movie from "./movie.png"
+import AIBuilder from "./AIBuilder.png"
+import food from "./food_landing.png"
+import portfolio from "./mern_portfolio.png"
+import advocate from "./portfolio_advocate.png"
 // ─── Theme ────────────────────────────────────────────────────────────────────
 const themes = {
   dark: {
@@ -23,15 +31,16 @@ const themes = {
 };
 
 // ─── Images ───────────────────────────────────────────────────────────────────
-const PROFILE_IMG = "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=500&q=80";
-const ABOUT_IMG   = "https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=700&q=80";
+const PROFILE_IMG = Profile;
+const ABOUT_IMG   = About
 const PROJECT_IMGS = [
-  "https://images.unsplash.com/photo-1551650975-87deedd944c3?w=600&q=80",
-  "https://images.unsplash.com/photo-1565106430482-8f6e74349ca1?w=600&q=80",
-  "https://images.unsplash.com/photo-1522542550221-31fd19575a2d?w=600&q=80",
-  "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600&q=80",
-  "https://images.unsplash.com/photo-1504639725590-34d0984388bd?w=600&q=80",
-  "https://images.unsplash.com/photo-1555099962-4199c345e5dd?w=600&q=80",
+  movie,
+  students,
+ AIBuilder,
+  food,
+  portfolio,
+  advocate
+  
 ];
 const ALL_IMAGES = [PROFILE_IMG, ABOUT_IMG, ...PROJECT_IMGS];
 
@@ -290,7 +299,9 @@ function Navbar({ theme, t, toggleTheme, activeSection }) {
               )}
             </button>
           ))}
-          <button onClick={toggleTheme} style={{
+        
+        </div>
+  <button onClick={toggleTheme} style={{
             background:t.accentGlow,border:`1px solid ${t.border}`,
             borderRadius:20,padding:"6px 16px",cursor:"pointer",color:t.accent,
             fontFamily:"'Space Mono',monospace",fontSize:11,letterSpacing:1,
@@ -298,8 +309,6 @@ function Navbar({ theme, t, toggleTheme, activeSection }) {
           }}>
             {theme==="dark"?"☀ LIGHT":"◉ DARK"}
           </button>
-        </div>
-
         {/* Hamburger */}
         <button className="nav-ham" onClick={()=>setMobileOpen(o=>!o)} style={{
           display:"none",flexDirection:"column",gap:5,
@@ -338,13 +347,7 @@ function Navbar({ theme, t, toggleTheme, activeSection }) {
               padding:"8px 24px",
             }}>{item}</button>
           ))}
-          <button onClick={()=>{toggleTheme();setMobileOpen(false);}} style={{
-            marginTop:16,background:t.accentGlow,border:`1px solid ${t.border}`,
-            borderRadius:20,padding:"10px 28px",cursor:"pointer",color:t.accent,
-            fontFamily:"'Space Mono',monospace",fontSize:13,
-          }}>
-            {theme==="dark"?"☀ LIGHT MODE":"◉ DARK MODE"}
-          </button>
+       
         </div>
       )}
     </>
@@ -354,7 +357,7 @@ function Navbar({ theme, t, toggleTheme, activeSection }) {
 // ─── Hero ─────────────────────────────────────────────────────────────────────
 function HeroSection({ t }) {
   const [typed, setTyped] = useState("");
-  const roles = ["Full Stack Developer","MERN Specialist","API Architect","UI Engineer"];
+  const roles = ["Full Stack Developer","MERN Specialist","Freelancer","Backend Developer"];
   const [rIdx,setRIdx] = useState(0);
   const [cIdx,setCIdx] = useState(0);
   const [del,setDel] = useState(false);
@@ -458,13 +461,13 @@ function HeroSection({ t }) {
             ))}
           </div>
           <div className="pr2" style={{position:"absolute",width:308,height:308,borderRadius:"50%",border:`1px dashed ${t.accent}18`,animation:"rotateSlowR 32s linear infinite"}}/>
-          <div className="pimg" style={{width:265,height:265,borderRadius:"50%",overflow:"hidden",border:`3px solid ${t.accent}`,boxShadow:`0 0 0 8px ${t.accentGlow}, 0 0 55px ${t.accentGlowStrong}`,position:"relative",zIndex:1,flexShrink:0}}>
+          <div className="pimg" style={{width:365,height:365,borderRadius:"50%",overflow:"hidden",border:`3px solid ${t.accent}`,boxShadow:`0 0 0 8px ${t.accentGlow}, 0 0 55px ${t.accentGlowStrong}`,position:"relative",zIndex:1,flexShrink:0}}>
             <img src={PROFILE_IMG} alt="Sundar" style={{width:"100%",height:"100%",objectFit:"cover",filter:"contrast(1.06) saturate(0.92)"}}/>
           </div>
 
           {/* FIX 14: Float cards have hero-float-card class; hidden on mobile */}
           <div className="hero-float-card" style={{position:"absolute",bottom:"-8%",left:"-10%",background:t.bgCard,border:`1px solid ${t.border}`,borderRadius:8,padding:"12px 18px",backdropFilter:"blur(12px)",WebkitBackdropFilter:"blur(12px)",animation:"floatCard 4s ease-in-out infinite",zIndex:2}}>
-            <div style={{fontFamily:"'Space Mono',monospace",fontSize:20,fontWeight:700,color:t.accent}}>50+</div>
+            <div style={{fontFamily:"'Space Mono',monospace",fontSize:20,fontWeight:700,color:t.accent}}>0</div>
             <div style={{fontFamily:"'DM Sans',sans-serif",fontSize:11,color:t.textMuted,marginTop:2}}>Projects Delivered</div>
           </div>
           <div className="hero-float-card" style={{position:"absolute",top:"-8%",right:"-10%",background:t.bgCard,border:`1px solid ${t.border}`,borderRadius:8,padding:"12px 18px",backdropFilter:"blur(12px)",WebkitBackdropFilter:"blur(12px)",animation:"floatCard 4s ease-in-out 1.1s infinite",zIndex:2}}>
@@ -495,9 +498,9 @@ function SectionHeader({number,eyebrow,title,accent,t}){
 // ─── About ────────────────────────────────────────────────────────────────────
 function AboutSection({t}){
   const skills=[
-    {name:"React / Next.js",pct:95},{name:"Node.js / Express",pct:92},
-    {name:"MongoDB / Mongoose",pct:88},{name:"TypeScript",pct:85},
-    {name:"REST API Design",pct:90},{name:"DevOps / Docker",pct:78},
+    {name:"html / css",pct:95},
+    {name:"java script",pct:88},{name:"React Js",pct:85},
+    {name:"Node js",pct:90},{name:"Express js",pct:78},{name:"mongoDb",pct:80}
   ];
   return (
     <section id="about" className="sec-pad" style={{padding:"110px 40px",background:t.bgSecondary,position:"relative"}}>
@@ -508,7 +511,7 @@ function AboutSection({t}){
           <div className="reveal reveal-left" style={{position:"relative"}}>
             <div style={{position:"absolute",top:18,left:18,right:-18,bottom:-18,border:`1px solid ${t.accent}35`,borderRadius:4}}/>
             <div style={{borderRadius:4,overflow:"hidden",border:`1px solid ${t.border}`,position:"relative",zIndex:1}}>
-              <img src={ABOUT_IMG} alt="About" style={{width:"100%",height:400,objectFit:"cover",display:"block",filter:"contrast(1.04)",transition:"transform 0.5s ease"}}
+              <img src={ABOUT_IMG} alt="About" style={{width:"100%",height:600,objectFit:"cover",display:"block",filter:"contrast(1.04)",transition:"transform 0.5s ease"}}
                 onMouseEnter={e=>e.target.style.transform="scale(1.04)"}
                 onMouseLeave={e=>e.target.style.transform="scale(1)"}
               />
@@ -548,12 +551,11 @@ function AboutSection({t}){
 
 // ─── Projects ─────────────────────────────────────────────────────────────────
 const PROJECTS=[
-  {title:"ShopNest E-Commerce",tech:["React","Node.js","MongoDB","Stripe"],img:PROJECT_IMGS[0],tag:"Full Stack",desc:"Complete e-commerce platform with real-time inventory, secure payments & admin dashboard."},
-  {title:"TaskFlow SaaS",tech:["Next.js","Express","PostgreSQL","Socket.io"],img:PROJECT_IMGS[1],tag:"SaaS",desc:"Real-time project management with Kanban boards, team collab & advanced analytics."},
-  {title:"BrandCraft Agency",tech:["React","GSAP","Node.js","Sanity"],img:PROJECT_IMGS[2],tag:"Creative",desc:"Pixel-perfect agency site with advanced animations and headless CMS integration."},
-  {title:"FinTrack Dashboard",tech:["React","D3.js","Express","MongoDB"],img:PROJECT_IMGS[3],tag:"Dashboard",desc:"Financial analytics dashboard with interactive charts, reports & PDF export."},
-  {title:"CodeReview API",tech:["Node.js","GraphQL","Redis","Docker"],img:PROJECT_IMGS[4],tag:"Backend",desc:"High-performance code review API with caching, rate limiting & CI/CD pipeline."},
-  {title:"Portfolio Builder",tech:["React","Tailwind","Node.js","Cloudinary"],img:PROJECT_IMGS[5],tag:"Tool",desc:"Drag-and-drop portfolio builder with custom themes, analytics & export options."},
+    {title:"Advocate Portfolio",tech:["html","tailwind css"],img:PROJECT_IMGS[5],tag:"portfolio Website",desc:"Impressive portfolio design for Advocate"},
+    {title:"Hotel Landing page",tech:["html","tailwind css"],img:PROJECT_IMGS[3],tag:"landing website",desc:"impressive landing page design for hotel"},
+    {title:"Developer Portfolio",tech:["html","tailwind css"],img:PROJECT_IMGS[4],tag:"portfolio website",desc:"Impressive portfolio design for Advocate"},
+  
+  
 ];
 
 function ProjectCard({ p, i, t, hov, setHov }) {
@@ -589,54 +591,51 @@ function ProjectCard({ p, i, t, hov, setHov }) {
 
 function ProjectsSection({t}){
   const [hov,setHov]=useState(null);
-  const [showAll,setShowAll]=useState(false);
+  const navigate= useNavigate();
+  const [showAll,setShowAll]=useState(true);
   const visibleProjects = showAll ? PROJECTS : PROJECTS.slice(0,3);
 
   return (
-    <section id="projects" className="sec-pad" style={{padding:"110px 40px",background:t.bg,position:"relative"}}>
-      <SectionDivider t={t}/>
-      <div style={{maxWidth:1200,margin:"0 auto"}}>
-        <SectionHeader number="02" eyebrow="WHAT I'VE BUILT" title="Selected" accent="Projects" t={t}/>
-        <div className="proj-grid" style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:22}}>
-          {visibleProjects.map((p,i)=>(
-            <ProjectCard key={p.title} p={p} i={i} t={t} hov={hov} setHov={setHov}/>
-          ))}
-        </div>
-        <div className="reveal reveal-up" style={{textAlign:"center",marginTop:52}}>
-          {!showAll ? (
-            <div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:14}}>
-              <div style={{display:"flex",gap:6}}>
-                {[0,1,2].map(i=>(
-                  <span key={i} style={{width:6,height:6,borderRadius:"50%",background:i===0?t.accent:t.border,border:`1px solid ${t.accent}55`}}/>
-                ))}
-              </div>
-              <p style={{fontFamily:"'DM Sans',sans-serif",fontSize:13,color:t.textMuted}}>
-                Showing 3 of {PROJECTS.length} projects
-              </p>
-              <button
-                onClick={()=>setShowAll(true)}
-                style={{display:"inline-flex",alignItems:"center",gap:10,background:"transparent",border:`1px solid ${t.accent}`,borderRadius:4,padding:"14px 36px",color:t.accent,fontFamily:"'Space Mono',monospace",fontSize:12,fontWeight:700,letterSpacing:1.5,cursor:"pointer",textTransform:"uppercase",transition:"all 0.3s ease"}}
-                onMouseEnter={e=>{e.currentTarget.style.background=t.accentGlow;e.currentTarget.style.boxShadow=`0 0 24px ${t.accentGlowStrong}`;e.currentTarget.style.transform="translateY(-2px)";}}
-                onMouseLeave={e=>{e.currentTarget.style.background="transparent";e.currentTarget.style.boxShadow="none";e.currentTarget.style.transform="translateY(0)";}}
-              >
-                <span>View All Projects</span>
-                <span style={{fontSize:16}}>↓</span>
-                <span style={{fontFamily:"'Space Mono',monospace",fontSize:10,background:t.accent,color:"#fff",borderRadius:10,padding:"2px 8px",marginLeft:2}}>{PROJECTS.length}</span>
-              </button>
-            </div>
-          ) : (
-            <button
-              onClick={()=>setShowAll(false)}
-              style={{display:"inline-flex",alignItems:"center",gap:10,background:t.accentGlow,border:`1px solid ${t.border}`,borderRadius:4,padding:"12px 30px",color:t.textMuted,fontFamily:"'Space Mono',monospace",fontSize:12,letterSpacing:1,cursor:"pointer",textTransform:"uppercase",transition:"all 0.3s ease"}}
-              onMouseEnter={e=>{e.currentTarget.style.borderColor=t.accent;e.currentTarget.style.color=t.accent;}}
-              onMouseLeave={e=>{e.currentTarget.style.borderColor=t.border;e.currentTarget.style.color=t.textMuted;}}
-            >
-              <span>↑</span> Show Less
-            </button>
-          )}
-        </div>
-      </div>
-    </section>
+   <section id="projects" className="sec-pad" style={{padding:"110px 40px",background:t.bg,position:"relative"}}>
+  <SectionDivider t={t}/>
+  <div style={{maxWidth:1200,margin:"0 auto"}}>
+    <SectionHeader number="02" eyebrow="WHAT I'VE BUILT" title="Selected" accent="Projects" t={t}/>
+    
+    <div className="proj-grid" style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:22}}>
+      {visibleProjects.map((p,i)=>(
+        <ProjectCard key={p.title} p={p} i={i} t={t} hov={hov} setHov={setHov}/>
+      ))}
+    </div>
+
+    {/* View Projects Button Section */}
+    <div className="reveal reveal-up" style={{textAlign:"center", marginTop:52}}>
+      <button 
+        onClick={() => navigate('/projects')}
+        style={{
+          padding: "14px 28px",
+          backgroundColor: "transparent",
+          color: t.accent || "#fff", // Based on your theme
+          border: `1px solid ${t.accent || "#fff"}`,
+          borderRadius: "4px",
+          fontSize: "14px",
+          fontWeight: "600",
+          cursor: "pointer",
+          transition: "all 0.3s ease",
+          textTransform: "uppercase",
+          letterSpacing: "1px"
+        }}
+        onMouseEnter={(e) => {
+          e.target.style.background = t.accentAlpha || "rgba(255,255,255,0.1)";
+        }}
+        onMouseLeave={(e) => {
+          e.target.style.background = "transparent";
+        }}
+      >
+        View All Projects
+      </button>
+    </div>
+  </div>
+</section>  
   );
 }
 
@@ -644,7 +643,7 @@ function ProjectsSection({t}){
 const PLANS=[
   {name:"Starter",price:"₹15,000",period:"/ project",badge:null,
    features:["Single page website","Responsive design","Basic React frontend","Contact form integration","1 revision round","5-day delivery"],cta:"Get Started"},
-  {name:"Professional",price:"₹45,000",period:"/ project",badge:"MOST POPULAR",
+  {name:"Professional",price:"₹45,000",period:"/ project",badge:"BEST CHOICE",
    features:["Full MERN stack app","REST API development","MongoDB database design","JWT Authentication","Admin dashboard","3 revision rounds","14-day delivery","1 month free support"],cta:"Start Project"},
   {name:"Enterprise",price:"Custom",period:"/ quote",badge:null,
    features:["Complex web applications","Microservices architecture","GraphQL / REST APIs","Redis caching & queues","Docker & CI/CD setup","Unlimited revisions","Dedicated support","NDA available"],cta:"Let's Talk"},
@@ -787,6 +786,8 @@ export default function FreeLance() {
   const [show, setShow] = useState(false);
   const [activeSection, setActiveSection] = useState("home");
   const t = themes[themeKey];
+
+  
 
   useGlobalStyles(t);
   useScrollReveal();
