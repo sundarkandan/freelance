@@ -1,373 +1,798 @@
-    import React from 'react';
-    import { useState,useRef,useEffect } from 'react';
+import { useState, useEffect, useRef } from "react";
 
-    import Img from './sundar.jpeg'
-    import AIBuilder from './AIBuilder.png'
-    import att from './attendance.png'
-    import movie from './movie.png'
-   import AOS from 'aos';
-   import About from "./about.jpeg"
-    import 'aos/dist/aos.css';
-import { Link } from 'react-router-dom';
-    const FreeLance = () => {
-        // AOS Initialization
-    useEffect(() => {
-        AOS.init({
-            duration: 1000,
-       
-           
-        });
-    }, []);
-        const [isMenuOpen, setIsMenuOpen] = useState(false)
-    const form = useRef();
-    const TypedText = ({ words }) => {
-    const [index, setIndex] = React.useState(0);
-    const [subIndex, setSubIndex] = React.useState(0);
-    const [reverse, setReverse] = React.useState(false);
+// ─── Theme ────────────────────────────────────────────────────────────────────
+const themes = {
+  dark: {
+    bg: "#080d08", bgSecondary: "#0c170c", bgCard: "#101a10",
+    border: "#1c381c", text: "#e4f4e4", textMuted: "#5a825a", textSecondary: "#9ab89a",
+    accent: "#22c55e", accentDim: "#16a34a", accentLight: "#4ade80",
+    accentGlow: "rgba(34,197,94,0.13)", accentGlowStrong: "rgba(34,197,94,0.32)",
+    surface: "rgba(8,13,8,0.85)", gradientHero: "linear-gradient(135deg,#080d08 0%,#0c170c 60%,#080d08 100%)",
+    scrollTrack: "#0c170c", scrollThumb: "rgba(34,197,94,0.45)", scrollThumbHover: "#22c55e",
+    navBg: "rgba(8,13,8,0.85)",
+  },
+  light: {
+    bg: "#f2fbf2", bgSecondary: "#e6f7e6", bgCard: "#ffffff",
+    border: "#b3ecc3", text: "#0d2410", textMuted: "#4a724a", textSecondary: "#2a602a",
+    accent: "#16a34a", accentDim: "#15803d", accentLight: "#22c55e",
+    accentGlow: "rgba(22,163,74,0.10)", accentGlowStrong: "rgba(22,163,74,0.22)",
+    surface: "rgba(242,251,242,0.90)", gradientHero: "linear-gradient(135deg,#f2fbf2 0%,#dcfce7 60%,#f2fbf2 100%)",
+    scrollTrack: "#d1fae5", scrollThumb: "rgba(22,163,74,0.50)", scrollThumbHover: "#16a34a",
+    navBg: "rgba(242,251,242,0.90)",
+  },
+};
 
-    // Typing logic
-    React.useEffect(() => {
-        if (subIndex === words[index].length + 1 && !reverse) {
-        setTimeout(() => setReverse(true), 2000); // Wait before deleting
-        return;
+// ─── Images ───────────────────────────────────────────────────────────────────
+const PROFILE_IMG = "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=500&q=80";
+const ABOUT_IMG   = "https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=700&q=80";
+const PROJECT_IMGS = [
+  "https://images.unsplash.com/photo-1551650975-87deedd944c3?w=600&q=80",
+  "https://images.unsplash.com/photo-1565106430482-8f6e74349ca1?w=600&q=80",
+  "https://images.unsplash.com/photo-1522542550221-31fd19575a2d?w=600&q=80",
+  "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600&q=80",
+  "https://images.unsplash.com/photo-1504639725590-34d0984388bd?w=600&q=80",
+  "https://images.unsplash.com/photo-1555099962-4199c345e5dd?w=600&q=80",
+];
+const ALL_IMAGES = [PROFILE_IMG, ABOUT_IMG, ...PROJECT_IMGS];
+
+// ─── Global style injector ────────────────────────────────────────────────────
+function useGlobalStyles(t) {
+  useEffect(() => {
+    let el = document.getElementById("sd-global");
+    if (!el) { el = document.createElement("style"); el.id = "sd-global"; document.head.appendChild(el); }
+    el.textContent = `
+      *, *::before, *::after { box-sizing: border-box; margin:0; padding:0; }
+      html { scroll-behavior:smooth; }
+      body { overflow-x:hidden; background:${t.bg}; }
+      body.loading { overflow:hidden !important; position:fixed !important; width:100% !important; top:0 !important; left:0 !important; }
+      ::selection { background:${t.accentGlow}; color:${t.accent}; }
+      ::-webkit-scrollbar { width:5px; }
+      ::-webkit-scrollbar-track { background:${t.scrollTrack}; }
+      ::-webkit-scrollbar-thumb { background:${t.scrollThumb}; border-radius:3px; }
+      ::-webkit-scrollbar-thumb:hover { background:${t.scrollThumbHover}; }
+      * { scrollbar-width: thin; scrollbar-color: ${t.scrollThumb} ${t.scrollTrack}; }
+
+      @keyframes blink        { 0%,100%{opacity:1} 50%{opacity:.15} }
+      @keyframes blinkCursor  { 0%,100%{opacity:1} 50%{opacity:0}   }
+      @keyframes pulse        { 0%,100%{opacity:.5;transform:scale(1)} 50%{opacity:1;transform:scale(1.12)} }
+      @keyframes gridMove     { from{background-position:0 0} to{background-position:60px 60px} }
+      @keyframes rotateSlow   { from{transform:rotate(0deg)}  to{transform:rotate(360deg)}  }
+      @keyframes rotateSlowR  { from{transform:rotate(0deg)}  to{transform:rotate(-360deg)} }
+      @keyframes floatOrb     { 0%,100%{transform:translate(0,0)} 50%{transform:translate(-18px,26px)} }
+      @keyframes floatCard    { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)} }
+      @keyframes slideInL     { from{opacity:0;transform:translateX(-50px)} to{opacity:1;transform:translateX(0)} }
+      @keyframes slideInR     { from{opacity:0;transform:translateX(50px)}  to{opacity:1;transform:translateX(0)} }
+      @keyframes fadeInUp     { from{opacity:0;transform:translateY(28px)}  to{opacity:1;transform:translateY(0)} }
+      @keyframes shimmer      { from{background-position:-200% 0} to{background-position:200% 0} }
+      @keyframes scanline     { 0%{transform:translateY(-100%)} 100%{transform:translateY(100vh)} }
+      @keyframes glitch1      { 0%,100%{clip-path:inset(0 0 98% 0)} 10%{clip-path:inset(30% 0 50% 0)} 20%{clip-path:inset(60% 0 20% 0)} 30%{clip-path:inset(10% 0 80% 0)} 40%{clip-path:inset(80% 0 5% 0)} 50%{clip-path:inset(45% 0 40% 0)} }
+      @keyframes glitch2      { 0%,100%{clip-path:inset(0 0 98% 0);transform:translateX(0)} 10%{clip-path:inset(40% 0 40% 0);transform:translateX(-4px)} 20%{clip-path:inset(70% 0 10% 0);transform:translateX(4px)} 30%{clip-path:inset(20% 0 70% 0);transform:translateX(-2px)} }
+      @keyframes terminalFade { 0%{opacity:0;transform:translateY(6px)} 100%{opacity:1;transform:translateY(0)} }
+      @keyframes progressPulse{ 0%,100%{box-shadow:0 0 14px rgba(34,197,94,0.85)} 50%{box-shadow:0 0 28px rgba(34,197,94,1),0 0 50px rgba(34,197,94,0.5)} }
+      @keyframes crtFlicker   { 0%{opacity:1} 92%{opacity:1} 93%{opacity:0.85} 94%{opacity:1} 96%{opacity:0.92} 100%{opacity:1} }
+      @keyframes matrixDrop   { 0%{transform:translateY(-100%);opacity:1} 100%{transform:translateY(100vh);opacity:0} }
+      @keyframes revealUp     { from{opacity:0;transform:translateY(40px)} to{opacity:1;transform:translateY(0)} }
+      @keyframes revealLeft   { from{opacity:0;transform:translateX(-40px)} to{opacity:1;transform:translateX(0)} }
+      @keyframes revealRight  { from{opacity:0;transform:translateX(40px)} to{opacity:1;transform:translateX(0)} }
+      @keyframes revealScale  { from{opacity:0;transform:scale(0.88)} to{opacity:1;transform:scale(1)} }
+      @keyframes revealFade   { from{opacity:0} to{opacity:1} }
+
+      .reveal { opacity:0; }
+      .reveal.visible { animation-fill-mode:both; animation-duration:0.7s; animation-timing-function:cubic-bezier(0.22,1,0.36,1); }
+      .reveal-up.visible     { animation-name:revealUp; }
+      .reveal-left.visible   { animation-name:revealLeft; }
+      .reveal-right.visible  { animation-name:revealRight; }
+      .reveal-scale.visible  { animation-name:revealScale; }
+      .reveal-fade.visible   { animation-name:revealFade; }
+
+      @media (max-width:900px){
+        .hero-grid  { grid-template-columns:1fr!important; text-align:center; gap:48px!important; }
+        .hero-right { order:-1; }
+        .hero-btns  { justify-content:center!important; }
+        .hero-bdgs  { justify-content:center!important; }
+        .about-grid { grid-template-columns:1fr!important; gap:52px!important; }
+        .proj-grid  { grid-template-columns:1fr 1fr!important; }
+        .price-grid { grid-template-columns:1fr!important; }
+        .contact-grid { grid-template-columns:1fr!important; }
+        .foot-inner { flex-direction:column!important; align-items:center!important; text-align:center; }
+        .nav-links  { display:none!important; }
+        .nav-ham    { display:flex!important; }
+      }
+      @media (max-width:600px){
+        .proj-grid  { grid-template-columns:1fr!important; }
+        .sec-pad    { padding:72px 18px!important; }
+        .hero-sec   { padding:0 18px!important; }
+        .nav-bar    { padding:13px 18px!important; }
+        .pr1        { width:250px!important;height:250px!important; }
+        .pr2        { width:210px!important;height:210px!important; }
+        .pimg       { width:180px!important;height:180px!important; }
+      }
+    `;
+  }, [t]);
+}
+
+// ─── Scroll Reveal Hook ───────────────────────────────────────────────────────
+function useScrollReveal() {
+  useEffect(() => {
+    const els = document.querySelectorAll(".reveal");
+    if (!els.length) return;
+    const obs = new IntersectionObserver((entries) => {
+      entries.forEach((e, i) => {
+        if (e.isIntersecting) {
+          const delay = e.target.dataset.delay || 0;
+          setTimeout(() => e.target.classList.add("visible"), Number(delay));
+          obs.unobserve(e.target);
         }
+      });
+    }, { threshold: 0.12 });
+    els.forEach(el => obs.observe(el));
+    return () => obs.disconnect();
+  });
+}
 
-        if (subIndex === 0 && reverse) {
-        setReverse(false);
-        setIndex((prev) => (prev + 1) % words.length);
-        return;
+// ─── Loading Screen — Simple & Elegant ───────────────────────────────────────
+function LoadingScreen({ progress, done }) {
+  return (
+    <div style={{
+      position: "fixed", inset: 0, zIndex: 9999,
+      background: "#080d08",
+      display: "flex", flexDirection: "column",
+      alignItems: "center", justifyContent: "center",
+      transition: "opacity 1s ease",
+      opacity: done ? 0 : 1,
+      pointerEvents: done ? "none" : "all",
+    }}>
+
+      {/* Soft radial glow */}
+      <div style={{
+        position: "absolute", width: 480, height: 480, borderRadius: "50%",
+        background: "radial-gradient(circle, rgba(34,197,94,0.06) 0%, transparent 70%)",
+        pointerEvents: "none",
+      }} />
+
+      {/* Logo */}
+      <div style={{
+        fontFamily: "'Space Mono', monospace",
+        fontSize: "clamp(30px, 6vw, 50px)",
+        fontWeight: 700,
+        letterSpacing: 2,
+        opacity: 0,
+        animation: "loadIn 0.8s cubic-bezier(0.22,1,0.36,1) 0.1s forwards",
+        marginBottom: 10,
+      }}>
+        <span style={{ color: "#22c55e", textShadow: "0 0 28px rgba(34,197,94,0.55)" }}>sundar</span>
+        <span style={{ color: "#e4f4e4" }}>Dev</span>
+      </div>
+
+      {/* Tagline */}
+      <div style={{
+        fontFamily: "'Space Mono', monospace",
+        fontSize: 9,
+        letterSpacing: 6,
+        color: "rgba(34,197,94,0.35)",
+        textTransform: "uppercase",
+        marginBottom: 56,
+        opacity: 0,
+        animation: "loadIn 0.7s ease 0.35s forwards",
+      }}>
+        MERN Stack Developer
+      </div>
+
+      {/* Progress bar */}
+      <div style={{
+        width: "min(240px, 55vw)",
+        height: 1,
+        background: "rgba(34,197,94,0.08)",
+        borderRadius: 1,
+        overflow: "hidden",
+        opacity: 0,
+        animation: "loadIn 0.5s ease 0.5s forwards",
+      }}>
+        <div style={{
+          height: "100%",
+          width: `${progress}%`,
+          background: "linear-gradient(90deg, #16a34a, #22c55e, #4ade80)",
+          borderRadius: 1,
+          transition: "width 0.3s ease",
+          boxShadow: "0 0 8px rgba(34,197,94,0.8)",
+        }} />
+      </div>
+
+      {/* Percent */}
+      <div style={{
+        fontFamily: "'Space Mono', monospace",
+        fontSize: 9,
+        color: "rgba(34,197,94,0.3)",
+        letterSpacing: 3,
+        marginTop: 16,
+        opacity: 0,
+        animation: "loadIn 0.5s ease 0.6s forwards",
+      }}>
+        {String(Math.round(progress)).padStart(3, "0")}%
+      </div>
+
+      <style>{`
+        @keyframes loadIn {
+          from { opacity: 0; transform: translateY(10px); }
+          to   { opacity: 1; transform: translateY(0); }
         }
+      `}</style>
+    </div>
+  );
+}
 
-        const timeout = setTimeout(() => {
-        setSubIndex((prev) => prev + (reverse ? -1 : 1));
-        }, reverse ? 75 : 150); // Typing speed vs Deleting speed
 
-        return () => clearTimeout(timeout);
-    }, [subIndex, index, reverse, words]);
+// ─── Navbar ───────────────────────────────────────────────────────────────────
+function Navbar({ theme, t, toggleTheme, activeSection }) {
+  const [scrolled, setScrolled] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const navItems = ["home","about","projects","pricing","contact"];
 
-    return <span>{`${words[index].substring(0, subIndex)}`}</span>;
-    };
-    return (
-        <>
-        <div className="min-h-screen bg-slate-50 text-slate-900 font-sans selection:bg-blue-100 selection:text-blue-600 overflow-x-hidden">
-    
+  useEffect(() => {
+    const h = () => setScrolled(window.scrollY > 40);
+    window.addEventListener("scroll", h);
+    return () => window.removeEventListener("scroll", h);
+  }, []);
 
-        {/* Navigation */}
-        <nav data-aos="fade" data-aos- className="fixed top-0 w-full bg-white/90 backdrop-blur-md border-b border-slate-200 z-50">
-        <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
-            
-            {/* Logo - Left Side */}
-            <div className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
-                Sundar K
-            </div>
-            
-            {/* Desktop Menu - Pushed to the Right */}
-            <div className="hidden md:flex items-center gap-8"> 
-                <div className="flex space-x-8 font-medium text-slate-600">
-                    <a href="#home" className="hover:text-blue-600 transition-colors">Home</a>
-                    <a href="#about" className="hover:text-blue-600 transition-colors">About</a>
-                    <a href="#projects" className="hover:text-blue-600 transition-colors">Projects</a>
-                    <a href="#pricing" className="hover:text-blue-600 transition-colors">Pricing</a>
-                    <a href="#contact" className="hover:text-blue-600 transition-colors">Contact</a>
-                </div>
+  const goTo = id => { document.getElementById(id)?.scrollIntoView({behavior:"smooth"}); setMobileOpen(false); };
 
-            
-            </div>
-
-            {/* Hamburger Menu Button (Mobile Only) */}
-            <button 
-                onClick={() => setIsMenuOpen(!isMenuOpen)} 
-                className="md:hidden p-2 text-slate-600 hover:bg-slate-100 rounded-lg transition-colors"
-            >
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    {isMenuOpen ? (
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M6 18L18 6M6 6l12 12" />
-                    ) : (
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M4 6h16M4 12h16M4 18h16" />
-                    )}
-                </svg>
+  return (
+    <>
+      <nav className="nav-bar" style={{
+        position:"fixed",top:0,left:0,right:0,zIndex:200,
+        padding:scrolled?"10px 40px":"18px 40px",
+        background:scrolled?t.navBg:"transparent",
+        backdropFilter:scrolled?"blur(22px)":"none",
+        borderBottom:scrolled?`1px solid ${t.border}`:"none",
+        display:"flex",alignItems:"center",justifyContent:"space-between",
+        transition:"all 0.4s ease",
+      }}>
+        <div onClick={()=>goTo("home")} style={{cursor:"pointer",display:"flex",alignItems:"center",gap:7}}>
+          <span style={{fontFamily:"'Space Mono',monospace",fontSize:21,fontWeight:700}}>
+            <span style={{color:t.accent,textShadow:`0 0 14px ${t.accentGlowStrong}`}}>sundar</span>
+            <span style={{color:t.text}}>Dev</span>
+          </span>
+          <span style={{width:6,height:6,borderRadius:"50%",background:t.accent,boxShadow:`0 0 8px ${t.accent}`,animation:"blink 1.5s infinite"}}/>
+        </div>
+        <div className="nav-links" style={{display:"flex",alignItems:"center",gap:28}}>
+          {navItems.map(item=>(
+            <button key={item} onClick={()=>goTo(item)} style={{
+              background:"none",border:"none",cursor:"pointer",
+              fontFamily:"'Space Mono',monospace",fontSize:12,letterSpacing:1.2,
+              color:activeSection===item?t.accent:t.textMuted,
+              textTransform:"uppercase",position:"relative",padding:"4px 0",
+              transition:"color 0.3s",
+            }}>
+              {item}
+              {activeSection===item&&(
+                <span style={{position:"absolute",bottom:-2,left:0,right:0,height:1,background:t.accent,boxShadow:`0 0 6px ${t.accent}`}}/>
+              )}
             </button>
+          ))}
+          <button onClick={toggleTheme} style={{
+            background:t.accentGlow,border:`1px solid ${t.border}`,
+            borderRadius:20,padding:"6px 16px",cursor:"pointer",color:t.accent,
+            fontFamily:"'Space Mono',monospace",fontSize:11,letterSpacing:1,
+            transition:"all 0.3s",display:"flex",alignItems:"center",gap:6,
+          }}>
+            {theme==="dark"?"☀ LIGHT":"◉ DARK"}
+          </button>
         </div>
-
-        {/* Mobile Dropdown Menu */}
-        <div className={`md:hidden ${isMenuOpen ? 'block' : 'hidden'} bg-white border-b border-slate-200 shadow-xl`}>
-            <div className="px-6 py-6 flex flex-col gap-4">
-                <a href="#home" onClick={() => setIsMenuOpen(false)} className="text-lg font-semibold text-slate-900">Home</a>
-                <a href="#about" onClick={() => setIsMenuOpen(false)} className="text-lg font-semibold text-slate-900">About</a>
-                <a href="#projects" onClick={() => setIsMenuOpen(false)} className="text-lg font-semibold text-slate-900">Projects</a>
-                <a href="#pricing" onClick={() => setIsMenuOpen(false)} className="text-lg font-semibold text-slate-900">Pricing</a>
-                <a href="#contact" onClick={() => setIsMenuOpen(false)} className="text-lg font-semibold text-slate-900">Contact</a>
-            </div>
+        <button className="nav-ham" onClick={()=>setMobileOpen(o=>!o)} style={{
+          display:"none",flexDirection:"column",gap:5,
+          background:"none",border:"none",cursor:"pointer",padding:4,
+        }}>
+          {[0,1,2].map(i=>(
+            <span key={i} style={{
+              display:"block",width:22,height:2,borderRadius:1,background:t.accent,transition:"all 0.3s",
+              transform:mobileOpen&&i===0?"rotate(45deg) translate(5px,5px)":mobileOpen&&i===1?"scaleX(0)":mobileOpen&&i===2?"rotate(-45deg) translate(5px,-5px)":"none",
+            }}/>
+          ))}
+        </button>
+      </nav>
+      {mobileOpen&&(
+        <div style={{position:"fixed",inset:0,zIndex:199,background:t.bg,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",gap:32}}>
+          {navItems.map(item=>(
+            <button key={item} onClick={()=>goTo(item)} style={{background:"none",border:"none",cursor:"pointer",fontFamily:"'Space Mono',monospace",fontSize:22,letterSpacing:3,color:activeSection===item?t.accent:t.text,textTransform:"uppercase"}}>{item}</button>
+          ))}
+          <button onClick={()=>{toggleTheme();setMobileOpen(false);}} style={{marginTop:16,background:t.accentGlow,border:`1px solid ${t.border}`,borderRadius:20,padding:"10px 28px",cursor:"pointer",color:t.accent,fontFamily:"'Space Mono',monospace",fontSize:13}}>
+            {theme==="dark"?"☀ LIGHT MODE":"◉ DARK MODE"}
+          </button>
         </div>
-    </nav>
+      )}
+    </>
+  );
+}
 
-        {/* Home Section */}
-        <section id="home" className="pt-32 pb-20 px-6 overflow-hidden">
-            <div className="max-w-7xl mx-auto">
-                <div className="grid lg:grid-cols-2 gap-12 items-center">
-                    <div className="text-left z-10">
-                        <span data-aos="zoom-out" data-aos-delay='200' className="inline-block py-1 px-3 rounded-full bg-blue-50 text-blue-600 text-sm font-bold mb-6">
-                            AVAILABLE FOR NEW PROJECTS
-                        </span>
-                        <h1  data-aos="zoom-out" data-aos-delay='400' className="text-5xl md:text-7xl font-extrabold tracking-tight text-slate-900 mb-8 leading-[1.1]">
-                            Building Digital <br />
-                            <span className="text-blue-600">Experiences That</span> <br />
-                            Scale Your Business.
-                        </h1>
-                        <p  data-aos="zoom-out" data-aos-delay='800'  className="text-xl text-slate-600 max-w-xl mb-10 leading-relaxed">
-                            I specialize in creating high-performance, responsive, and aesthetically pleasing websites using the latest MERN stack technologies.
-                        </p>
-                       
-                    </div>
-                    
-                    <div className="relative" data-aos="zoom-out" data-aos-delay='1000'>
-                        <div className="w-full aspect-square rounded-3xl bg-slate-100 overflow-hidden relative z-10 border-8 border-white shadow-2xl">
-                            <img 
-                                src={Img}
-                                alt="Profile" 
-                                className="w-full borders h-full object-cover grayscale hover:grayscale-0 transition-all duration-500"
-                            />
-                        </div>
-                        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-blue-100/40 rounded-full blur-3xl -z-0"></div>
-                        
-                        <div className="absolute top-10 right-0 bg-white p-4 rounded-2xl shadow-xl border border-slate-100 flex items-center gap-3 animate-bounce delay-700 z-20">
-                            <div className="w-10 h-10 bg-blue-50 rounded-lg flex items-center justify-center text-blue-600">
-                                <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path></svg>
-                            </div>
-                            <div>
-                                <div className="text-[10px] font-bold text-slate-400 uppercase">Tech Stack</div>
-                                <div className="text-sm font-bold">MERN Expert</div>
-                            </div>
-                        </div>
+// ─── Hero ─────────────────────────────────────────────────────────────────────
+function HeroSection({ t }) {
+  const [typed, setTyped] = useState("");
+  const roles = ["Full Stack Developer","MERN Specialist","API Architect","UI Engineer"];
+  const [rIdx,setRIdx] = useState(0);
+  const [cIdx,setCIdx] = useState(0);
+  const [del,setDel] = useState(false);
 
-                        <div className="absolute bottom-10 -left-10 bg-white p-4 rounded-2xl shadow-xl border border-slate-100 flex items-center gap-3 animate-pulse z-20">
-                            <div className="w-10 h-10 bg-green-50 rounded-lg flex items-center justify-center text-green-600 text-xl font-bold">
-                                $
-                            </div>
-                            <div>
-                                <div className="text-[10px] font-bold text-slate-400 uppercase">Availability</div>
-                                <div className="text-sm font-bold text-green-600">Open for Hire</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
+  useEffect(() => {
+    const cur = roles[rIdx];
+    const id = setTimeout(() => {
+      if (!del) {
+        if (cIdx<cur.length) { setTyped(cur.slice(0,cIdx+1)); setCIdx(c=>c+1); }
+        else setTimeout(()=>setDel(true),1800);
+      } else {
+        if (cIdx>0) { setTyped(cur.slice(0,cIdx-1)); setCIdx(c=>c-1); }
+        else { setDel(false); setRIdx(r=>(r+1)%roles.length); }
+      }
+    }, del?38:78);
+    return ()=>clearTimeout(id);
+  },[cIdx,del,rIdx]);
 
-        {/* About Section */}
-        <section id="about" className="py-24 bg-white px-6">
-            <div className="max-w-7xl mx-auto">
-                <div className="grid md:grid-cols-2 gap-16 items-center">
-                    <div className="relative"  data-aos="fade-up">
-                        <div className="w-full aspect-square rounded-3xl bg-slate-100 overflow-hidden relative z-10 border-8 border-white shadow-2xl">
-                            <img 
-                                src={About}
-                                alt="Profile" 
-                                className="w-full borders h-full object-cover grayscale hover:grayscale-0 transition-all duration-500"
-                            />
-                        </div>
-                        <div className="absolute -bottom-6 -right-6 w-48 h-48 bg-blue-100 rounded-3xl -z-0"></div>
-                        <div className="absolute -top-6 -left-6 w-32 h-32 bg-indigo-50 rounded-full -z-0"></div>
-                    </div>
-                    <div data-aos="fade-up">
-                        <h2 className="text-4xl font-bold mb-6">Hi, I am sundar a Professional</h2>
-                        {/* About Section-la intha edathula update pannunga */}
-    <div className="text-3xl font-mono font-bold text-blue-600 mb-6 flex items-center">
-        <TypedText words={["Full Stack Developer", "MERN Stack Expert", "Freelance Web Builder"]} />
-        <span className="typing-cursor"></span>
-    </div>
-                        <p className="text-lg text-slate-600 leading-relaxed mb-8">
-                            With over 1 years of experience in the MERN stack, I transform complex business requirements into elegant web solutions. I focus on clean code, performance optimization, and user-centric design.
-                        </p>
-                    
-                    </div>
-                </div>
-            </div>
-        </section>
+  const goTo = id => document.getElementById(id)?.scrollIntoView({behavior:"smooth"});
 
-        {/* Projects Section */}
-        <section id="projects" className="py-24 px-6 bg-slate-50">
-    <div className="max-w-7xl mx-auto">
-        {/* Header Section */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-4">
-            <div>
-                <h2 className="text-4xl font-bold mb-4">Featured Projects</h2>
-                <p className="text-slate-600">A selection of my recent works across different industries.</p>
-            </div>
-            
-            {/* View All Projects Link */}
-            <Link 
-                to="/projects" 
-                className="group flex items-center gap-2 text-blue-600 font-semibold hover:text-blue-700 transition-colors"
-            >
-                View All Projects
-                <svg 
-                    xmlns="http://www.w3.org/2000/svg" 
-                    className="h-5 w-5 group-hover:translate-x-1 transition-transform" 
-                    fill="none" 
-                    viewBox="0 0 24 24" 
-                    stroke="currentColor"
-                >
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                </svg>
-            </Link>
-        </div>
+  return (
+    <section id="home" className="hero-sec" style={{
+      minHeight:"100vh",background:t.gradientHero,
+      display:"flex",alignItems:"center",
+      padding:"0 40px",position:"relative",overflow:"hidden",
+    }}>
+      <div style={{
+        position:"absolute",inset:0,
+        backgroundImage:`linear-gradient(${t.border}66 1px,transparent 1px),linear-gradient(90deg,${t.border}66 1px,transparent 1px)`,
+        backgroundSize:"60px 60px",animation:"gridMove 22s linear infinite",
+      }}/>
+      {[{w:380,h:380,top:"8%",left:"55%",d:"0s"},{w:240,h:240,top:"62%",left:"8%",d:"1.1s"},{w:160,h:160,top:"28%",left:"78%",d:"0.6s"}].map((o,i)=>(
+        <div key={i} style={{position:"absolute",width:o.w,height:o.h,borderRadius:"50%",background:`radial-gradient(circle,${t.accentGlow} 0%,transparent 70%)`,top:o.top,left:o.left,animation:`floatOrb 9s ease-in-out ${o.d} infinite`,pointerEvents:"none"}}/>
+      ))}
 
-        {/* Projects Grid */}
-        <div className="grid md:grid-cols-3 gap-8">
-            {[
-                {name:"AI Powered Website Designer", img:AIBuilder, dis:"Build Your Website Designs"}, 
-                {name:"Movie Ticket Booking", img:movie, dis:"book your tickets and manage the booked tickets"}, 
-                {name:"college attendance system", img:att, dis:"Manage the students attendace"}
-            ].map((item, idx) => (
-                <div 
-                    data-aos="fade-up" 
-                    data-aos-delay={idx * 200} 
-                    key={item.name} 
-                    className="group bg-white rounded-2xl overflow-hidden border border-slate-200 hover:shadow-xl transition-all duration-300"
-                >
-                    <div className="h-56 bg-slate-200 relative overflow-hidden">
-                        <div className="absolute inset-0 bg-blue-600/10 group-hover:bg-transparent transition-colors"></div>
-                        <img src={item.img} alt={item.name} className="w-full h-full object-cover" />
-                    </div>
-                    <div className="p-6">
-                        <div className="flex gap-2 mb-4">
-                            <span className="text-[10px] font-bold tracking-widest uppercase py-1 px-2 bg-blue-50 text-blue-600 rounded">React</span>
-                            <span className="text-[10px] font-bold tracking-widest uppercase py-1 px-2 bg-slate-100 text-slate-600 rounded">Node.js</span>
-                        </div>
-                        <h3 className="text-xl font-bold mb-2">{item.name}</h3>
-                        <p className="text-slate-600 text-sm mb-4">{item.dis}</p>
-                    </div>
-                </div>
+      <div className="hero-grid" style={{maxWidth:1200,margin:"0 auto",width:"100%",display:"grid",gridTemplateColumns:"1fr 1fr",gap:72,alignItems:"center",position:"relative",zIndex:1}}>
+        <div style={{animation:"slideInL 0.85s ease forwards"}}>
+          <div style={{display:"inline-flex",alignItems:"center",gap:8,border:`1px solid ${t.accent}40`,borderRadius:20,padding:"6px 16px",marginBottom:22,background:t.accentGlow,animation:"fadeInUp 0.6s ease 0.2s both"}}>
+            <span style={{width:8,height:8,borderRadius:"50%",background:t.accent,boxShadow:`0 0 10px ${t.accent}`,animation:"blink 1.5s infinite"}}/>
+            <span style={{fontFamily:"'Space Mono',monospace",fontSize:10,color:t.accent,letterSpacing:2}}>AVAILABLE FOR HIRE</span>
+          </div>
+          <h1 style={{fontFamily:"'Syne',sans-serif",fontSize:"clamp(40px,5.8vw,74px)",fontWeight:800,lineHeight:1.05,color:t.text,margin:"0 0 6px",animation:"fadeInUp 0.6s ease 0.3s both"}}>Hi, I'm</h1>
+          <h1 style={{fontFamily:"'Syne',sans-serif",fontSize:"clamp(44px,6.5vw,80px)",fontWeight:800,lineHeight:1,color:t.accent,margin:"0 0 22px",animation:"fadeInUp 0.6s ease 0.4s both",position:"relative",display:"inline-block"}}>
+            Sundar
+            <span style={{position:"absolute",bottom:-4,left:0,right:0,height:3,borderRadius:2,background:`linear-gradient(90deg,transparent,${t.accent},transparent)`,backgroundSize:"200% 100%",animation:"shimmer 2.4s linear infinite"}}/>
+          </h1>
+          <div style={{fontFamily:"'Space Mono',monospace",fontSize:"clamp(15px,1.8vw,20px)",color:t.textSecondary,marginBottom:28,minHeight:30,animation:"fadeInUp 0.6s ease 0.5s both"}}>
+            <span style={{color:t.accentDim}}>&gt; </span>
+            {typed}
+            <span style={{display:"inline-block",width:2,height:"0.9em",background:t.accent,marginLeft:2,verticalAlign:"middle",animation:"blinkCursor 0.7s step-end infinite"}}/>
+          </div>
+          <p style={{color:t.textMuted,fontSize:15,lineHeight:1.85,maxWidth:460,marginBottom:36,fontFamily:"'DM Sans',sans-serif",animation:"fadeInUp 0.6s ease 0.6s both"}}>
+            Crafting scalable, production-ready web apps with MongoDB, Express, React &amp; Node.js. From pixel-perfect UI to robust APIs — I build digital products that perform.
+          </p>
+          <div className="hero-btns" style={{display:"flex",gap:14,flexWrap:"wrap",animation:"fadeInUp 0.6s ease 0.7s both"}}>
+            <button onClick={()=>goTo("projects")} style={{background:`linear-gradient(135deg,${t.accent},${t.accentDim})`,border:"none",borderRadius:4,padding:"13px 30px",color:"#fff",fontFamily:"'Space Mono',monospace",fontSize:12,fontWeight:700,letterSpacing:1,cursor:"pointer",textTransform:"uppercase",boxShadow:`0 4px 22px ${t.accentGlowStrong}`,transition:"all 0.3s ease"}}
+              onMouseEnter={e=>{e.currentTarget.style.transform="translateY(-2px)";e.currentTarget.style.boxShadow=`0 8px 32px ${t.accentGlowStrong}`;}}
+              onMouseLeave={e=>{e.currentTarget.style.transform="translateY(0)";e.currentTarget.style.boxShadow=`0 4px 22px ${t.accentGlowStrong}`;}}
+            >View Projects</button>
+            <button onClick={()=>goTo("contact")} style={{background:"transparent",border:`1px solid ${t.accent}`,borderRadius:4,padding:"13px 30px",color:t.accent,fontFamily:"'Space Mono',monospace",fontSize:12,fontWeight:700,letterSpacing:1,cursor:"pointer",textTransform:"uppercase",transition:"all 0.3s ease"}}
+              onMouseEnter={e=>{e.currentTarget.style.background=t.accentGlow;}}
+              onMouseLeave={e=>{e.currentTarget.style.background="transparent";}}
+            >Hire Me</button>
+          </div>
+          <div className="hero-bdgs" style={{display:"flex",gap:8,flexWrap:"wrap",marginTop:44,animation:"fadeInUp 0.6s ease 0.8s both"}}>
+            {["MongoDB","Express","React","Node.js","TypeScript","REST API"].map(tech=>(
+              <span key={tech} style={{fontFamily:"'Space Mono',monospace",fontSize:10,letterSpacing:0.8,color:t.textMuted,border:`1px solid ${t.border}`,borderRadius:2,padding:"4px 10px",background:t.accentGlow}}>{tech}</span>
             ))}
-        </div>
-    </div>
-</section>
-
-        {/* Pricing Section */}
-        {/* Pricing Section */}
-    <section id="pricing" className="py-24 px-6 bg-white overflow-hidden">
-        <div className="max-w-7xl mx-auto text-center mb-16 animate-on-scroll">
-            <h2 className="text-4xl font-bold mb-4">Pricing Plans</h2>
-            <p className="text-slate-600">Transparent pricing for every stage of your business.</p>
+          </div>
         </div>
 
-        <div className="max-w-7xl mx-auto grid md:grid-cols-3 gap-8 items-center">
-            
-            {/* Basic Plan */}
-            <div className="price-card p-8 rounded-3xl border border-slate-200 bg-white group hover:border-blue-400" data-aos="fade-up"  >
-                <h3 className="text-xl font-bold mb-2 group-hover:text-blue-600 transition-colors">Landing Page</h3>
-                <div className="text-4xl font-black mb-6">₹499  <span className="text-sm font-medium text-slate-400">+hosting charges</span></div>
-                <ul className="space-y-4 mb-8 text-slate-600 text-sm text-left">
-                    <li className="flex items-center"><span className="mr-2 text-blue-400">✓</span>Dark Mode Light Mode Support</li>
-                    <li className="flex items-center"><span className="mr-2 text-green-500">✓</span> Fully Responsive Design</li>
-                    <li className="flex items-center"><span className="mr-2 text-green-500">✓</span>unlimited pages</li>
-                </ul>
-            
-            </div>
-
-            {/* Featured Plan (MERN) */}
-            <div  data-aos="fade-up"  data-aos-delay={200} className="price-card overflow-hidden p-8 rounded-3xl bg-slate-900 text-white shadow-2xl scale-105 relative z-10 border-2 border-blue-500">
-                <div className="absolute top-0 right-0 bg-blue-600 px-4 py-1 text-[10px] font-bold uppercase tracking-widest animate-pulse">Most Popular</div>
-                <h3 className="text-xl font-bold mb-2 text-blue-400">Portfolio</h3>
-                <div className="text-4xl font-black mb-6">₹199</div>
-                <ul className="space-y-4 mb-8 text-slate-300 text-sm text-left">
-                    <li className="flex items-center"><span className="mr-2 text-blue-400">✓</span>Single Page</li>
-                    <li className="flex items-center"><span className="mr-2 text-blue-400">✓</span>Responsive Design</li>
-                    <li className="flex items-center"><span className="mr-2 text-blue-400">✓</span>Dark Mode Light Mode Support</li>
-                   
-                </ul>
-            
-            </div>
-            {/* Enterprise Plan */}
-            <div  data-aos="fade-up"  data-aos-delay={300} className="price-card p-8 rounded-3xl border border-slate-200 bg-white group hover:border-indigo-400">
-                <h3 className="text-xl font-bold mb-2 group-hover:text-indigo-600 transition-colors">Full Stack</h3>
-                <div className="text-4xl font-black mb-6">₹999 <span className="text-sm font-medium text-slate-400">+hosting charges</span></div>
-                <ul className="space-y-4 mb-8 text-slate-600 text-sm text-left">
-                    <li className="flex items-center"><span className="mr-2 text-indigo-500">✓</span> Unlimited Pages</li>
-                    <li className="flex items-center"><span className="mr-2 text-indigo-500">✓</span>Custom Admin Dashboard</li>
-                    <li className="flex items-center"><span className="mr-2 text-indigo-500">✓</span> Database Setup (MongoDB)</li>
-                    <li className="flex items-center"><span className="mr-2 text-indigo-500">✓</span> 6 month support</li>
-                </ul>
-            
-            </div>
-            
+        <div className="hero-right" style={{display:"flex",justifyContent:"center",alignItems:"center",animation:"slideInR 0.85s ease forwards",position:"relative"}}>
+          <div className="pr1" style={{position:"absolute",width:370,height:370,borderRadius:"50%",border:`1px solid ${t.accent}28`,animation:"rotateSlow 22s linear infinite"}}>
+            {[0,90,180,270].map(deg=>(
+              <span key={deg} style={{position:"absolute",width:9,height:9,borderRadius:"50%",background:t.accent,boxShadow:`0 0 10px ${t.accent}`,top:"50%",left:"50%",transformOrigin:"0 0",transform:`rotate(${deg}deg) translateX(184px) translateY(-50%)`}}/>
+            ))}
+          </div>
+          <div className="pr2" style={{position:"absolute",width:308,height:308,borderRadius:"50%",border:`1px dashed ${t.accent}18`,animation:"rotateSlowR 32s linear infinite"}}/>
+          <div className="pimg" style={{width:265,height:265,borderRadius:"50%",overflow:"hidden",border:`3px solid ${t.accent}`,boxShadow:`0 0 0 8px ${t.accentGlow}, 0 0 55px ${t.accentGlowStrong}`,position:"relative",zIndex:1}}>
+            <img src={PROFILE_IMG} alt="Sundar" style={{width:"100%",height:"100%",objectFit:"cover",filter:"contrast(1.06) saturate(0.92)"}}/>
+          </div>
+          <div style={{position:"absolute",bottom:"6%",left:"-6%",background:t.bgCard,border:`1px solid ${t.border}`,borderRadius:8,padding:"12px 18px",backdropFilter:"blur(12px)",animation:"floatCard 4s ease-in-out infinite",zIndex:2}}>
+            <div style={{fontFamily:"'Space Mono',monospace",fontSize:20,fontWeight:700,color:t.accent}}>50+</div>
+            <div style={{fontFamily:"'DM Sans',sans-serif",fontSize:11,color:t.textMuted,marginTop:2}}>Projects Delivered</div>
+          </div>
+          <div style={{position:"absolute",top:"4%",right:"-6%",background:t.bgCard,border:`1px solid ${t.border}`,borderRadius:8,padding:"12px 18px",backdropFilter:"blur(12px)",animation:"floatCard 4s ease-in-out 1.1s infinite",zIndex:2}}>
+            <div style={{fontFamily:"'Space Mono',monospace",fontSize:20,fontWeight:700,color:t.accent}}>4yr</div>
+            <div style={{fontFamily:"'DM Sans',sans-serif",fontSize:11,color:t.textMuted,marginTop:2}}>Experience</div>
+          </div>
         </div>
+      </div>
     </section>
+  );
+}
 
-    {/* Compact Contact Section */}
-    {/* Contact Section - Added scroll-mt-32 for perfect alignment */}
-    {/* Contact Section - Compact & Better Fit */}
-    <section id="contact" className="py-16 px-6 bg-slate-50 scroll-mt-20">
-        <div className="max-w-4xl mx-auto"  data-aos="zoom-in" > {/* Max-width kuraichuruken for better look */}
-            <div className="relative overflow-hidden bg-white rounded-[2rem] p-8 md:p-12 shadow-xl border border-slate-100 text-center">
-                
-                {/* Background Accent */}
-                <div className="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-blue-600 to-indigo-600"></div>
-
-                <div className="relative z-10">
-                    <span className="inline-block py-1 px-3 rounded-full bg-blue-50 text-blue-600 text-[12px] font-bold mb-4">
-                        LET'S CONNECT
-                    </span>
-                    
-                    <h2 className="text-3xl md:text-4xl font-extrabold text-slate-900 mb-4 leading-tight">
-                        Ready to start your <br />
-                        <span className="text-blue-600">next big project?</span>
-                    </h2>
-
-                    <p className="text-base text-slate-500 mb-8 max-w-xl mx-auto">
-                        I'm currently looking for new opportunities. 
-                        Reach out via call or email!
-                    </p>
-
-                    {/* Contact Cards - Side by Side on Desktop */}
-                    <div className="grid md:grid-cols-2 gap-4 max-w-2xl mx-auto">
-                        {/* Call Card */}
-                        <a href="tel:+919597732047" className="group p-6 bg-slate-900 rounded-2xl hover:bg-blue-600 transition-all duration-300 shadow-lg hover:-translate-y-1">
-                            <div className="w-10 h-10 bg-white/10 rounded-xl flex items-center justify-center text-white mb-4 mx-auto">
-                                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" /></svg>
-                            </div>
-                            <h3 className="text-blue-400 font-bold text-[10px] uppercase tracking-widest mb-1 group-hover:text-white">Quick Call</h3>
-                            <p className="text-white text-lg font-bold">+91 95977 32047</p>
-                        </a>
-
-                        {/* Email Card */}
-                        <a href="mailto:sundarkandan23506@gmail.com" className="group p-6 bg-white border border-slate-200 rounded-2xl hover:border-blue-600 transition-all duration-300 shadow-sm hover:shadow-md hover:-translate-y-1">
-                            <div className="w-10 h-10 bg-blue-50 rounded-xl flex items-center justify-center text-blue-600 mb-4 mx-auto group-hover:bg-blue-600 group-hover:text-white transition-all">
-                                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>
-                            </div>
-                            <h3 className="text-slate-400 font-bold text-[10px] uppercase tracking-widest mb-1 group-hover:text-blue-600">Send Email</h3>
-                            <p className="text-slate-800 text-sm font-bold truncate">sundarkandan23506@gmail.com</p>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-        {/* Footer */}
-        <footer className="py-12 border-t border-slate-200 bg-white">
-            <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-8">
-                <div className="text-xl font-bold text-slate-900">Sundar K</div>
-                <div className="text-slate-500 text-sm">© 2024 Freelance Portfolio. All rights reserved.</div>
-                <div className="flex gap-6 text-slate-400">
-                    <p onClick={()=>{
-                        window.open('https://www.linkedin.com/in/sundar-kandan/')
-                    }} className="text-blue-600 transition-colors underline decoration-slate-200 pointer">LinkedIn</p>
-                    
-                    <p onClick={()=>{
-                        window.open('https://github.com/sundarkandan')
-                    }} className="text-blue-600 transition-colors underline decoration-slate-200 pointer">Github</p>
-
-                    <p onClick={()=>{
-                        window.open('https://www.instagram.com/sundardev_2006/')
-                    }} className="text-blue-600 transition-colors underline decoration-slate-200 pointer">Instagram</p>
-                </div>
-            </div>
-        </footer>
+// ─── Helpers ──────────────────────────────────────────────────────────────────
+function SectionDivider({t}){
+  return <div style={{position:"absolute",top:0,left:0,right:0,height:1,background:`linear-gradient(90deg,transparent,${t.accent},transparent)`}}/>;
+}
+function SectionHeader({number,eyebrow,title,accent,t}){
+  return (
+    <div className="reveal reveal-up" style={{textAlign:"center",marginBottom:72}}>
+      <span style={{fontFamily:"'Space Mono',monospace",fontSize:10,color:t.accent,letterSpacing:4}}>{number}. {eyebrow}</span>
+      <h2 style={{fontFamily:"'Syne',sans-serif",fontSize:"clamp(32px,4.5vw,54px)",fontWeight:800,color:t.text,margin:"10px 0 0"}}>
+        {title} <span style={{color:t.accent}}>{accent}</span>
+      </h2>
     </div>
-        </>
+  );
+}
+
+// ─── About ────────────────────────────────────────────────────────────────────
+function AboutSection({t}){
+  const skills=[
+    {name:"React / Next.js",pct:95},{name:"Node.js / Express",pct:92},
+    {name:"MongoDB / Mongoose",pct:88},{name:"TypeScript",pct:85},
+    {name:"REST API Design",pct:90},{name:"DevOps / Docker",pct:78},
+  ];
+  return (
+    <section id="about" className="sec-pad" style={{padding:"110px 40px",background:t.bgSecondary,position:"relative"}}>
+      <SectionDivider t={t}/>
+      <div style={{maxWidth:1200,margin:"0 auto"}}>
+        <SectionHeader number="01" eyebrow="WHO I AM" title="About" accent="Me" t={t}/>
+        <div className="about-grid" style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:72,alignItems:"center"}}>
+          <div className="reveal reveal-left" style={{position:"relative"}}>
+            <div style={{position:"absolute",top:18,left:18,right:-18,bottom:-18,border:`1px solid ${t.accent}35`,borderRadius:4}}/>
+            <div style={{borderRadius:4,overflow:"hidden",border:`1px solid ${t.border}`,position:"relative",zIndex:1}}>
+              <img src={ABOUT_IMG} alt="About" style={{width:"100%",height:400,objectFit:"cover",display:"block",filter:"contrast(1.04)",transition:"transform 0.5s ease"}}
+                onMouseEnter={e=>e.target.style.transform="scale(1.04)"}
+                onMouseLeave={e=>e.target.style.transform="scale(1)"}
+              />
+              <div style={{position:"absolute",inset:0,background:`linear-gradient(180deg,transparent 55%,${t.bg}bb 100%)`}}/>
+            </div>
+            <div style={{position:"absolute",bottom:-28,right:-8,zIndex:2,background:t.accent,borderRadius:4,padding:"14px 22px",textAlign:"center"}}>
+              <div style={{fontFamily:"'Syne',sans-serif",fontSize:28,fontWeight:800,color:"#fff",lineHeight:1}}>4+</div>
+              <div style={{fontFamily:"'Space Mono',monospace",fontSize:9,color:"rgba(255,255,255,0.85)",letterSpacing:1.5,marginTop:4}}>YEARS EXP</div>
+            </div>
+          </div>
+          <div className="reveal reveal-right" data-delay="100">
+            <p style={{color:t.textSecondary,fontSize:16,lineHeight:1.9,fontFamily:"'DM Sans',sans-serif",marginBottom:28}}>
+              I'm <strong style={{color:t.accent}}>Sundar</strong>, a passionate MERN Stack Developer from Chennai, India with 4+ years of experience building full-stack web applications. I specialise in transforming complex business requirements into clean, scalable code.
+            </p>
+            <p style={{color:t.textMuted,fontSize:14,lineHeight:1.8,fontFamily:"'DM Sans',sans-serif",marginBottom:36}}>
+              From crafting pixel-perfect React interfaces to designing fault-tolerant Node.js APIs, I bring end-to-end ownership to every project. I thrive in collaborative environments and love turning ideas into real, working products.
+            </p>
+            <div style={{display:"flex",flexDirection:"column",gap:14}}>
+              {skills.map((s,i)=>(
+                <div key={s.name} className="reveal reveal-fade" data-delay={`${i * 80}`}>
+                  <div style={{display:"flex",justifyContent:"space-between",marginBottom:5}}>
+                    <span style={{fontFamily:"'Space Mono',monospace",fontSize:11,color:t.textSecondary}}>{s.name}</span>
+                    <span style={{fontFamily:"'Space Mono',monospace",fontSize:11,color:t.accent}}>{s.pct}%</span>
+                  </div>
+                  <div style={{height:3,background:t.border,borderRadius:2,overflow:"hidden"}}>
+                    <div style={{height:"100%",width:`${s.pct}%`,background:`linear-gradient(90deg,${t.accentDim},${t.accent})`,borderRadius:2,boxShadow:`0 0 8px ${t.accent}55`}}/>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// ─── Projects ─────────────────────────────────────────────────────────────────
+const PROJECTS=[
+  {title:"ShopNest E-Commerce",tech:["React","Node.js","MongoDB","Stripe"],img:PROJECT_IMGS[0],tag:"Full Stack",desc:"Complete e-commerce platform with real-time inventory, secure payments & admin dashboard."},
+  {title:"TaskFlow SaaS",tech:["Next.js","Express","PostgreSQL","Socket.io"],img:PROJECT_IMGS[1],tag:"SaaS",desc:"Real-time project management with Kanban boards, team collab & advanced analytics."},
+  {title:"BrandCraft Agency",tech:["React","GSAP","Node.js","Sanity"],img:PROJECT_IMGS[2],tag:"Creative",desc:"Pixel-perfect agency site with advanced animations and headless CMS integration."},
+  {title:"FinTrack Dashboard",tech:["React","D3.js","Express","MongoDB"],img:PROJECT_IMGS[3],tag:"Dashboard",desc:"Financial analytics dashboard with interactive charts, reports & PDF export."},
+  {title:"CodeReview API",tech:["Node.js","GraphQL","Redis","Docker"],img:PROJECT_IMGS[4],tag:"Backend",desc:"High-performance code review API with caching, rate limiting & CI/CD pipeline."},
+  {title:"Portfolio Builder",tech:["React","Tailwind","Node.js","Cloudinary"],img:PROJECT_IMGS[5],tag:"Tool",desc:"Drag-and-drop portfolio builder with custom themes, analytics & export options."},
+];
+
+function ProjectCard({ p, i, t, hov, setHov }) {
+  return (
+    <div
+      className="reveal reveal-scale"
+      data-delay={`${i * 100}`}
+      onMouseEnter={()=>setHov(i)} onMouseLeave={()=>setHov(null)}
+      style={{
+        background:t.bgCard, border:`1px solid ${hov===i?t.accent:t.border}`,
+        borderRadius:6, overflow:"hidden", cursor:"pointer",
+        transition:"all 0.32s ease",
+        transform:hov===i?"translateY(-8px)":"translateY(0)",
+        boxShadow:hov===i?`0 18px 55px ${t.accentGlowStrong}`:"none",
+      }}>
+      <div style={{height:190,overflow:"hidden",position:"relative"}}>
+        <img src={p.img} alt={p.title} style={{width:"100%",height:"100%",objectFit:"cover",transition:"transform 0.5s ease",transform:hov===i?"scale(1.07)":"scale(1)"}}/>
+        <div style={{position:"absolute",inset:0,background:hov===i?`linear-gradient(180deg,transparent 20%,${t.accentDim}aa 100%)`:`linear-gradient(180deg,transparent 40%,${t.bg}cc 100%)`,transition:"all 0.32s"}}/>
+        <span style={{position:"absolute",top:10,right:10,background:t.accent,color:"#fff",fontFamily:"'Space Mono',monospace",fontSize:9,letterSpacing:1,padding:"3px 9px",borderRadius:2}}>{p.tag}</span>
+      </div>
+      <div style={{padding:"18px 22px 22px"}}>
+        <h3 style={{fontFamily:"'Syne',sans-serif",fontSize:17,fontWeight:700,color:t.text,margin:"0 0 7px"}}>{p.title}</h3>
+        <p style={{fontFamily:"'DM Sans',sans-serif",fontSize:13,color:t.textMuted,lineHeight:1.6,margin:"0 0 14px"}}>{p.desc}</p>
+        <div style={{display:"flex",gap:5,flexWrap:"wrap"}}>
+          {p.tech.map(tech=>(
+            <span key={tech} style={{fontFamily:"'Space Mono',monospace",fontSize:9,letterSpacing:0.5,color:t.accent,border:`1px solid ${t.accent}40`,borderRadius:2,padding:"3px 7px",background:t.accentGlow}}>{tech}</span>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function ProjectsSection({t}){
+  const [hov,setHov]=useState(null);
+  const [showAll,setShowAll]=useState(false);
+  const visibleProjects = showAll ? PROJECTS : PROJECTS.slice(0,3);
+
+  return (
+    <section id="projects" className="sec-pad" style={{padding:"110px 40px",background:t.bg,position:"relative"}}>
+      <SectionDivider t={t}/>
+      <div style={{maxWidth:1200,margin:"0 auto"}}>
+        <SectionHeader number="02" eyebrow="WHAT I'VE BUILT" title="Selected" accent="Projects" t={t}/>
+        <div className="proj-grid" style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:22}}>
+          {visibleProjects.map((p,i)=>(
+            <ProjectCard key={p.title} p={p} i={i} t={t} hov={hov} setHov={setHov}/>
+          ))}
+        </div>
+
+        {/* View All / Show Less toggle */}
+        <div className="reveal reveal-up" style={{textAlign:"center",marginTop:52}}>
+          {!showAll ? (
+            <div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:14}}>
+              <div style={{display:"flex",gap:6}}>
+                {[0,1,2].map(i=>(
+                  <span key={i} style={{width:6,height:6,borderRadius:"50%",background:i===0?t.accent:t.border,border:`1px solid ${t.accent}55`}}/>
+                ))}
+              </div>
+              <p style={{fontFamily:"'DM Sans',sans-serif",fontSize:13,color:t.textMuted}}>
+                Showing 3 of {PROJECTS.length} projects
+              </p>
+              <button
+                onClick={()=>setShowAll(true)}
+                style={{
+                  display:"inline-flex",alignItems:"center",gap:10,
+                  background:"transparent",border:`1px solid ${t.accent}`,
+                  borderRadius:4,padding:"14px 36px",
+                  color:t.accent,fontFamily:"'Space Mono',monospace",
+                  fontSize:12,fontWeight:700,letterSpacing:1.5,
+                  cursor:"pointer",textTransform:"uppercase",
+                  transition:"all 0.3s ease",
+                  position:"relative",overflow:"hidden",
+                }}
+                onMouseEnter={e=>{e.currentTarget.style.background=t.accentGlow;e.currentTarget.style.boxShadow=`0 0 24px ${t.accentGlowStrong}`;e.currentTarget.style.transform="translateY(-2px)";}}
+                onMouseLeave={e=>{e.currentTarget.style.background="transparent";e.currentTarget.style.boxShadow="none";e.currentTarget.style.transform="translateY(0)";}}
+              >
+                <span>View All Projects</span>
+                <span style={{fontSize:16}}>↓</span>
+                <span style={{fontFamily:"'Space Mono',monospace",fontSize:10,background:t.accent,color:"#fff",borderRadius:10,padding:"2px 8px",marginLeft:2}}>{PROJECTS.length}</span>
+              </button>
+            </div>
+          ) : (
+            <button
+              onClick={()=>setShowAll(false)}
+              style={{
+                display:"inline-flex",alignItems:"center",gap:10,
+                background:t.accentGlow,border:`1px solid ${t.border}`,
+                borderRadius:4,padding:"12px 30px",
+                color:t.textMuted,fontFamily:"'Space Mono',monospace",
+                fontSize:12,letterSpacing:1,
+                cursor:"pointer",textTransform:"uppercase",
+                transition:"all 0.3s ease",
+              }}
+              onMouseEnter={e=>{e.currentTarget.style.borderColor=t.accent;e.currentTarget.style.color=t.accent;}}
+              onMouseLeave={e=>{e.currentTarget.style.borderColor=t.border;e.currentTarget.style.color=t.textMuted;}}
+            >
+              <span>↑</span> Show Less
+            </button>
+          )}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// ─── Pricing ──────────────────────────────────────────────────────────────────
+const PLANS=[
+  {name:"Starter",price:"₹15,000",period:"/ project",badge:null,
+   features:["Single page website","Responsive design","Basic React frontend","Contact form integration","1 revision round","5-day delivery"],cta:"Get Started"},
+  {name:"Professional",price:"₹45,000",period:"/ project",badge:"MOST POPULAR",
+   features:["Full MERN stack app","REST API development","MongoDB database design","JWT Authentication","Admin dashboard","3 revision rounds","14-day delivery","1 month free support"],cta:"Start Project"},
+  {name:"Enterprise",price:"Custom",period:"/ quote",badge:null,
+   features:["Complex web applications","Microservices architecture","GraphQL / REST APIs","Redis caching & queues","Docker & CI/CD setup","Unlimited revisions","Dedicated support","NDA available"],cta:"Let's Talk"},
+];
+
+function PricingSection({t}){
+  const [hov,setHov]=useState(null);
+  const goContact=()=>document.getElementById("contact")?.scrollIntoView({behavior:"smooth"});
+  return (
+    <section id="pricing" className="sec-pad" style={{padding:"110px 40px",background:t.bgSecondary,position:"relative"}}>
+      <SectionDivider t={t}/>
+      <div style={{maxWidth:1200,margin:"0 auto"}}>
+        <SectionHeader number="03" eyebrow="INVESTMENT" title="Pricing" accent="Plans" t={t}/>
+        <p className="reveal reveal-fade" style={{color:t.textMuted,textAlign:"center",marginTop:-44,marginBottom:56,fontFamily:"'DM Sans',sans-serif",fontSize:14}}>
+          Transparent pricing, no hidden fees. Pick what fits your project.
+        </p>
+        <div className="price-grid" style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:22,alignItems:"stretch"}}>
+          {PLANS.map((plan,i)=>{
+            const isPop=plan.badge==="MOST POPULAR";
+            const isH=hov===i;
+            return (
+              <div key={i}
+                className="reveal reveal-up"
+                data-delay={`${i * 120}`}
+                onMouseEnter={()=>setHov(i)} onMouseLeave={()=>setHov(null)}
+                style={{
+                  background:isPop?`linear-gradient(155deg,${t.accentDim}18,${t.accent}0a)`:t.bgCard,
+                  border:`1px solid ${isPop||isH?t.accent:t.border}`,
+                  borderRadius:8,padding:"38px 30px",position:"relative",overflow:"hidden",
+                  transition:"all 0.32s ease",
+                  transform:isPop?"scale(1.04)":isH?"translateY(-6px)":"translateY(0)",
+                  boxShadow:isPop?`0 0 0 1px ${t.accent}40,0 28px 70px ${t.accentGlowStrong}`:isH?`0 14px 44px ${t.accentGlow}`:"none",
+                }}>
+                {isPop&&<div style={{position:"absolute",top:0,left:0,right:0,height:3,background:`linear-gradient(90deg,${t.accentDim},${t.accent},${t.accentLight})`,boxShadow:`0 0 14px ${t.accent}`}}/>}
+                {plan.badge&&<div style={{position:"absolute",top:18,right:18,background:t.accent,color:"#fff",fontFamily:"'Space Mono',monospace",fontSize:8,letterSpacing:1.5,padding:"4px 9px",borderRadius:2}}>{plan.badge}</div>}
+                <div style={{fontFamily:"'Space Mono',monospace",fontSize:11,color:t.accent,letterSpacing:2,textTransform:"uppercase",marginBottom:10}}>{plan.name}</div>
+                <div style={{marginBottom:28}}>
+                  <span style={{fontFamily:"'Syne',sans-serif",fontSize:40,fontWeight:800,color:t.text}}>{plan.price}</span>
+                  <span style={{fontFamily:"'DM Sans',sans-serif",fontSize:13,color:t.textMuted,marginLeft:4}}>{plan.period}</span>
+                </div>
+                <div style={{height:1,background:t.border,marginBottom:24}}/>
+                <ul style={{listStyle:"none",padding:0,margin:"0 0 32px"}}>
+                  {plan.features.map(f=>(
+                    <li key={f} style={{display:"flex",alignItems:"center",gap:9,marginBottom:10,fontFamily:"'DM Sans',sans-serif",fontSize:13,color:t.textSecondary}}>
+                      <span style={{width:15,height:15,borderRadius:"50%",background:t.accentGlow,border:`1px solid ${t.accent}55`,display:"flex",alignItems:"center",justifyContent:"center",fontSize:8,color:t.accent,flexShrink:0}}>✓</span>
+                      {f}
+                    </li>
+                  ))}
+                </ul>
+                <button onClick={goContact} style={{
+                  width:"100%",
+                  background:isPop?`linear-gradient(135deg,${t.accent},${t.accentDim})`:"transparent",
+                  border:`1px solid ${t.accent}`,borderRadius:4,padding:"13px",
+                  color:isPop?"#fff":t.accent,
+                  fontFamily:"'Space Mono',monospace",fontSize:12,fontWeight:700,
+                  letterSpacing:1,cursor:"pointer",textTransform:"uppercase",transition:"all 0.3s",
+                  boxShadow:isPop?`0 4px 18px ${t.accentGlowStrong}`:"none",
+                }}
+                  onMouseEnter={e=>{if(!isPop)e.currentTarget.style.background=t.accentGlow;}}
+                  onMouseLeave={e=>{if(!isPop)e.currentTarget.style.background="transparent";}}
+                >{plan.cta} →</button>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// ─── Contact ──────────────────────────────────────────────────────────────────
+function ContactSection({t}){
+  const email="sundar@sundardev.in";
+  const wa="https://wa.me/919876543210?text=Hi%20Sundar!%20I%20saw%20your%20portfolio%20and%20I%27d%20like%20to%20discuss%20a%20project.";
+  return (
+    <section id="contact" className="sec-pad" style={{padding:"110px 40px",background:t.bg,position:"relative"}}>
+      <SectionDivider t={t}/>
+      <div style={{maxWidth:780,margin:"0 auto",textAlign:"center"}}>
+        <div className="reveal reveal-up">
+          <span style={{fontFamily:"'Space Mono',monospace",fontSize:10,color:t.accent,letterSpacing:4}}>04. GET IN TOUCH</span>
+          <h2 style={{fontFamily:"'Syne',sans-serif",fontSize:"clamp(34px,5vw,58px)",fontWeight:800,color:t.text,margin:"10px 0 18px"}}>
+            Let's Build<br/><span style={{color:t.accent}}>Something Great</span>
+          </h2>
+          <p style={{color:t.textMuted,fontSize:15,lineHeight:1.85,fontFamily:"'DM Sans',sans-serif",maxWidth:500,margin:"0 auto 52px"}}>
+            Have a project in mind? Whether it's a startup MVP, a complex platform, or just an idea — I'd love to hear about it.
+          </p>
+        </div>
+        <div className="contact-grid reveal reveal-scale" data-delay="150" style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:20,maxWidth:520,margin:"0 auto 48px"}}>
+          <a href={`mailto:${email}`} style={{textDecoration:"none",background:t.bgCard,border:`1px solid ${t.border}`,borderRadius:8,padding:"28px 20px",display:"flex",flexDirection:"column",alignItems:"center",gap:10,transition:"all 0.3s"}}
+            onMouseEnter={e=>{e.currentTarget.style.borderColor=t.accent;e.currentTarget.style.transform="translateY(-4px)";e.currentTarget.style.boxShadow=`0 10px 36px ${t.accentGlowStrong}`;}}
+            onMouseLeave={e=>{e.currentTarget.style.borderColor=t.border;e.currentTarget.style.transform="translateY(0)";e.currentTarget.style.boxShadow="none";}}>
+            <div style={{width:48,height:48,borderRadius:"50%",background:t.accentGlow,border:`1px solid ${t.accent}40`,display:"flex",alignItems:"center",justifyContent:"center",fontSize:20}}>✉</div>
+            <div>
+              <div style={{fontFamily:"'Space Mono',monospace",fontSize:10,color:t.accent,letterSpacing:2,textTransform:"uppercase",marginBottom:5}}>Email Me</div>
+              <div style={{fontFamily:"'DM Sans',sans-serif",fontSize:12,color:t.textSecondary,wordBreak:"break-all"}}>{email}</div>
+            </div>
+          </a>
+          <a href={wa} target="_blank" rel="noreferrer" style={{textDecoration:"none",background:t.bgCard,border:`1px solid ${t.border}`,borderRadius:8,padding:"28px 20px",display:"flex",flexDirection:"column",alignItems:"center",gap:10,transition:"all 0.3s"}}
+            onMouseEnter={e=>{e.currentTarget.style.borderColor="#25D366";e.currentTarget.style.transform="translateY(-4px)";e.currentTarget.style.boxShadow="0 10px 36px rgba(37,211,102,0.18)";}}
+            onMouseLeave={e=>{e.currentTarget.style.borderColor=t.border;e.currentTarget.style.transform="translateY(0)";e.currentTarget.style.boxShadow="none";}}>
+            <div style={{width:48,height:48,borderRadius:"50%",background:"rgba(37,211,102,0.1)",border:"1px solid rgba(37,211,102,0.28)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:20}}>💬</div>
+            <div>
+              <div style={{fontFamily:"'Space Mono',monospace",fontSize:10,color:"#25D366",letterSpacing:2,textTransform:"uppercase",marginBottom:5}}>WhatsApp</div>
+              <div style={{fontFamily:"'DM Sans',sans-serif",fontSize:12,color:t.textSecondary}}>+91 98765 43210</div>
+            </div>
+          </a>
+        </div>
+        <div className="reveal reveal-fade" data-delay="250" style={{display:"inline-flex",alignItems:"center",gap:9,border:`1px solid ${t.border}`,borderRadius:24,padding:"9px 22px",background:t.accentGlow}}>
+          <span style={{width:7,height:7,borderRadius:"50%",background:t.accent,boxShadow:`0 0 9px ${t.accent}`,animation:"blink 1.5s infinite"}}/>
+          <span style={{fontFamily:"'Space Mono',monospace",fontSize:11,color:t.textSecondary,letterSpacing:0.8}}>Currently available for new projects</span>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// ─── Footer ───────────────────────────────────────────────────────────────────
+function Footer({t}){
+  return (
+    <footer style={{padding:"26px 40px",background:t.bgSecondary,borderTop:`1px solid ${t.border}`}}>
+      <div className="foot-inner reveal reveal-fade" style={{display:"flex",justifyContent:"space-between",alignItems:"center",flexWrap:"wrap",gap:10}}>
+        <span style={{fontFamily:"'Space Mono',monospace",fontSize:14,fontWeight:700,color:t.accent}}>sundarDev</span>
+        <span style={{fontFamily:"'DM Sans',sans-serif",fontSize:12,color:t.textMuted}}>© 2025 Sundar. All rights reserved.</span>
+        <div style={{display:"flex",gap:16}}>
+          {["GitHub","LinkedIn","Twitter"].map(s=>(
+            <a key={s} href="#" style={{fontFamily:"'Space Mono',monospace",fontSize:10,color:t.textMuted,textDecoration:"none",letterSpacing:1,transition:"color 0.2s"}}
+              onMouseEnter={e=>e.target.style.color=t.accent}
+              onMouseLeave={e=>e.target.style.color=t.textMuted}>{s}</a>
+          ))}
+        </div>
+      </div>
+    </footer>
+  );
+}
+
+// ─── Main App ─────────────────────────────────────────────────────────────────
+export default function FreeLance() {
+  const [themeKey, setThemeKey] = useState("dark");
+  const [progress, setProgress] = useState(0);
+  const [loadDone, setLoadDone] = useState(false);
+  const [show, setShow] = useState(false);
+  const [activeSection, setActiveSection] = useState("home");
+  const t = themes[themeKey];
+
+  useGlobalStyles(t);
+  useScrollReveal();
+
+  // Lock body scroll during loading, reset to top when done
+  useEffect(() => {
+    document.body.classList.add("loading");
+    return () => document.body.classList.remove("loading");
+  }, []);
+
+  useEffect(() => {
+    if (show) {
+      document.body.classList.remove("loading");
+      window.scrollTo(0, 0);
+    }
+  }, [show]);
+
+  useEffect(() => {
+    let loaded = 0;
+    const total = ALL_IMAGES.length;
+    ALL_IMAGES.forEach(src => {
+      const img = new Image();
+      img.onload = img.onerror = () => {
+        loaded++;
+        setProgress(Math.round((loaded / total) * 100));
+        if (loaded === total) {
+          setTimeout(() => { setLoadDone(true); setTimeout(() => setShow(true), 820); }, 350);
+        }
+      };
+      img.src = src;
+    });
+    setTimeout(() => setProgress(p => Math.max(p, 30)), 500);
+  }, []);
+
+  useEffect(() => {
+    if (!show) return;
+    const obs = new IntersectionObserver(
+      entries => entries.forEach(e => { if (e.isIntersecting) setActiveSection(e.target.id); }),
+      { threshold: 0.35 }
     );
-    };
+    ["home","about","projects","pricing","contact"].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) obs.observe(el);
+    });
+    return () => obs.disconnect();
+  }, [show]);
 
-    export default FreeLance;
+  return (
+    <>
+      <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+      <LoadingScreen progress={progress} done={loadDone}/>
+      <div style={{fontFamily:"'DM Sans',sans-serif",background:t.bg,color:t.text,minHeight:"100vh",opacity:show?1:0,transition:"opacity 0.65s ease",visibility:show?"visible":"hidden",pointerEvents:show?"all":"none"}}>
+        <Navbar theme={themeKey} t={t} toggleTheme={()=>setThemeKey(k=>k==="dark"?"light":"dark")} activeSection={activeSection}/>
+        <HeroSection t={t}/>
+        <AboutSection t={t}/>
+        <ProjectsSection t={t}/>
+        <PricingSection t={t}/>
+        <ContactSection t={t}/>
+        <Footer t={t}/>
+      </div>
+    </>
+  );
+}
