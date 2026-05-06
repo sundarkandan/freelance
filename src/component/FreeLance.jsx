@@ -9,7 +9,7 @@ const themes = {
     accentGlow: "rgba(34,197,94,0.13)", accentGlowStrong: "rgba(34,197,94,0.32)",
     surface: "rgba(8,13,8,0.85)", gradientHero: "linear-gradient(135deg,#080d08 0%,#0c170c 60%,#080d08 100%)",
     scrollTrack: "#0c170c", scrollThumb: "rgba(34,197,94,0.45)", scrollThumbHover: "#22c55e",
-    navBg: "rgba(8,13,8,0.85)",
+    navBg: "rgba(8,13,8,0.92)",
   },
   light: {
     bg: "#f2fbf2", bgSecondary: "#e6f7e6", bgCard: "#ffffff",
@@ -18,7 +18,7 @@ const themes = {
     accentGlow: "rgba(22,163,74,0.10)", accentGlowStrong: "rgba(22,163,74,0.22)",
     surface: "rgba(242,251,242,0.90)", gradientHero: "linear-gradient(135deg,#f2fbf2 0%,#dcfce7 60%,#f2fbf2 100%)",
     scrollTrack: "#d1fae5", scrollThumb: "rgba(22,163,74,0.50)", scrollThumbHover: "#16a34a",
-    navBg: "rgba(242,251,242,0.90)",
+    navBg: "rgba(242,251,242,0.95)",
   },
 };
 
@@ -38,12 +38,21 @@ const ALL_IMAGES = [PROFILE_IMG, ABOUT_IMG, ...PROJECT_IMGS];
 // ─── Global style injector ────────────────────────────────────────────────────
 function useGlobalStyles(t) {
   useEffect(() => {
+    // FIX 1: Ensure viewport meta tag exists to prevent zoom on mobile
+    let viewportMeta = document.querySelector('meta[name="viewport"]');
+    if (!viewportMeta) {
+      viewportMeta = document.createElement("meta");
+      viewportMeta.name = "viewport";
+      document.head.appendChild(viewportMeta);
+    }
+    viewportMeta.content = "width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no";
+
     let el = document.getElementById("sd-global");
     if (!el) { el = document.createElement("style"); el.id = "sd-global"; document.head.appendChild(el); }
     el.textContent = `
       *, *::before, *::after { box-sizing: border-box; margin:0; padding:0; }
-      html { scroll-behavior:smooth; }
-      body { overflow-x:hidden; background:${t.bg}; }
+      html { scroll-behavior:smooth; -webkit-text-size-adjust:100%; text-size-adjust:100%; }
+      body { overflow-x:hidden; background:${t.bg}; -webkit-tap-highlight-color:transparent; }
       body.loading { overflow:hidden !important; position:fixed !important; width:100% !important; top:0 !important; left:0 !important; }
       ::selection { background:${t.accentGlow}; color:${t.accent}; }
       ::-webkit-scrollbar { width:5px; }
@@ -64,18 +73,12 @@ function useGlobalStyles(t) {
       @keyframes slideInR     { from{opacity:0;transform:translateX(50px)}  to{opacity:1;transform:translateX(0)} }
       @keyframes fadeInUp     { from{opacity:0;transform:translateY(28px)}  to{opacity:1;transform:translateY(0)} }
       @keyframes shimmer      { from{background-position:-200% 0} to{background-position:200% 0} }
-      @keyframes scanline     { 0%{transform:translateY(-100%)} 100%{transform:translateY(100vh)} }
-      @keyframes glitch1      { 0%,100%{clip-path:inset(0 0 98% 0)} 10%{clip-path:inset(30% 0 50% 0)} 20%{clip-path:inset(60% 0 20% 0)} 30%{clip-path:inset(10% 0 80% 0)} 40%{clip-path:inset(80% 0 5% 0)} 50%{clip-path:inset(45% 0 40% 0)} }
-      @keyframes glitch2      { 0%,100%{clip-path:inset(0 0 98% 0);transform:translateX(0)} 10%{clip-path:inset(40% 0 40% 0);transform:translateX(-4px)} 20%{clip-path:inset(70% 0 10% 0);transform:translateX(4px)} 30%{clip-path:inset(20% 0 70% 0);transform:translateX(-2px)} }
-      @keyframes terminalFade { 0%{opacity:0;transform:translateY(6px)} 100%{opacity:1;transform:translateY(0)} }
-      @keyframes progressPulse{ 0%,100%{box-shadow:0 0 14px rgba(34,197,94,0.85)} 50%{box-shadow:0 0 28px rgba(34,197,94,1),0 0 50px rgba(34,197,94,0.5)} }
-      @keyframes crtFlicker   { 0%{opacity:1} 92%{opacity:1} 93%{opacity:0.85} 94%{opacity:1} 96%{opacity:0.92} 100%{opacity:1} }
-      @keyframes matrixDrop   { 0%{transform:translateY(-100%);opacity:1} 100%{transform:translateY(100vh);opacity:0} }
       @keyframes revealUp     { from{opacity:0;transform:translateY(40px)} to{opacity:1;transform:translateY(0)} }
       @keyframes revealLeft   { from{opacity:0;transform:translateX(-40px)} to{opacity:1;transform:translateX(0)} }
       @keyframes revealRight  { from{opacity:0;transform:translateX(40px)} to{opacity:1;transform:translateX(0)} }
       @keyframes revealScale  { from{opacity:0;transform:scale(0.88)} to{opacity:1;transform:scale(1)} }
       @keyframes revealFade   { from{opacity:0} to{opacity:1} }
+      @keyframes loadIn       { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
 
       .reveal { opacity:0; }
       .reveal.visible { animation-fill-mode:both; animation-duration:0.7s; animation-timing-function:cubic-bezier(0.22,1,0.36,1); }
@@ -85,8 +88,10 @@ function useGlobalStyles(t) {
       .reveal-scale.visible  { animation-name:revealScale; }
       .reveal-fade.visible   { animation-name:revealFade; }
 
+      /* ── TABLET (≤900px) ── */
       @media (max-width:900px){
-        .hero-grid  { grid-template-columns:1fr!important; text-align:center; gap:48px!important; }
+        .hero-grid  { grid-template-columns:1fr!important; text-align:center; gap:40px!important; }
+        /* FIX 2: On mobile, image comes first (order:-1) but below navbar — handled via padding-top on hero */
         .hero-right { order:-1; }
         .hero-btns  { justify-content:center!important; }
         .hero-bdgs  { justify-content:center!important; }
@@ -97,15 +102,26 @@ function useGlobalStyles(t) {
         .foot-inner { flex-direction:column!important; align-items:center!important; text-align:center; }
         .nav-links  { display:none!important; }
         .nav-ham    { display:flex!important; }
+        /* FIX 3: Float cards hidden on mobile to avoid overflow */
+        .hero-float-card { display:none!important; }
       }
+
+      /* ── MOBILE (≤600px) ── */
       @media (max-width:600px){
         .proj-grid  { grid-template-columns:1fr!important; }
-        .sec-pad    { padding:72px 18px!important; }
-        .hero-sec   { padding:0 18px!important; }
-        .nav-bar    { padding:13px 18px!important; }
-        .pr1        { width:250px!important;height:250px!important; }
-        .pr2        { width:210px!important;height:210px!important; }
-        .pimg       { width:180px!important;height:180px!important; }
+        .sec-pad    { padding:72px 16px!important; }
+        /* FIX 2: Hero section gets enough top padding so profile pic clears the navbar */
+        .hero-sec   { padding:100px 16px 60px!important; min-height:100svh!important; }
+        .nav-bar    { padding:12px 16px!important; }
+        /* FIX 4: Orbital rings scale down on small screens */
+        .pr1        { width:220px!important; height:220px!important; }
+        .pr2        { width:185px!important; height:185px!important; }
+        .pimg       { width:155px!important; height:155px!important; }
+        /* Smaller orb container on mobile */
+        .hero-orb-wrap { height:240px!important; }
+        .contact-grid { grid-template-columns:1fr!important; max-width:100%!important; }
+        /* Pricing adjustments */
+        .price-grid > div { transform:none!important; }
       }
     `;
   }, [t]);
@@ -117,7 +133,7 @@ function useScrollReveal() {
     const els = document.querySelectorAll(".reveal");
     if (!els.length) return;
     const obs = new IntersectionObserver((entries) => {
-      entries.forEach((e, i) => {
+      entries.forEach((e) => {
         if (e.isIntersecting) {
           const delay = e.target.dataset.delay || 0;
           setTimeout(() => e.target.classList.add("visible"), Number(delay));
@@ -130,7 +146,7 @@ function useScrollReveal() {
   });
 }
 
-// ─── Loading Screen — Simple & Elegant ───────────────────────────────────────
+// ─── Loading Screen ───────────────────────────────────────────────────────────
 function LoadingScreen({ progress, done }) {
   return (
     <div style={{
@@ -142,18 +158,14 @@ function LoadingScreen({ progress, done }) {
       opacity: done ? 0 : 1,
       pointerEvents: done ? "none" : "all",
     }}>
-
-      {/* Soft radial glow */}
       <div style={{
         position: "absolute", width: 480, height: 480, borderRadius: "50%",
         background: "radial-gradient(circle, rgba(34,197,94,0.06) 0%, transparent 70%)",
         pointerEvents: "none",
       }} />
-
-      {/* Logo */}
       <div style={{
         fontFamily: "'Space Mono', monospace",
-        fontSize: "clamp(30px, 6vw, 50px)",
+        fontSize: "clamp(28px, 6vw, 50px)",
         fontWeight: 700,
         letterSpacing: 2,
         opacity: 0,
@@ -163,8 +175,6 @@ function LoadingScreen({ progress, done }) {
         <span style={{ color: "#22c55e", textShadow: "0 0 28px rgba(34,197,94,0.55)" }}>sundar</span>
         <span style={{ color: "#e4f4e4" }}>Dev</span>
       </div>
-
-      {/* Tagline */}
       <div style={{
         fontFamily: "'Space Mono', monospace",
         fontSize: 9,
@@ -177,8 +187,6 @@ function LoadingScreen({ progress, done }) {
       }}>
         MERN Stack Developer
       </div>
-
-      {/* Progress bar */}
       <div style={{
         width: "min(240px, 55vw)",
         height: 1,
@@ -197,8 +205,6 @@ function LoadingScreen({ progress, done }) {
           boxShadow: "0 0 8px rgba(34,197,94,0.8)",
         }} />
       </div>
-
-      {/* Percent */}
       <div style={{
         fontFamily: "'Space Mono', monospace",
         fontSize: 9,
@@ -210,17 +216,9 @@ function LoadingScreen({ progress, done }) {
       }}>
         {String(Math.round(progress)).padStart(3, "0")}%
       </div>
-
-      <style>{`
-        @keyframes loadIn {
-          from { opacity: 0; transform: translateY(10px); }
-          to   { opacity: 1; transform: translateY(0); }
-        }
-      `}</style>
     </div>
   );
 }
-
 
 // ─── Navbar ───────────────────────────────────────────────────────────────────
 function Navbar({ theme, t, toggleTheme, activeSection }) {
@@ -234,26 +232,49 @@ function Navbar({ theme, t, toggleTheme, activeSection }) {
     return () => window.removeEventListener("scroll", h);
   }, []);
 
-  const goTo = id => { document.getElementById(id)?.scrollIntoView({behavior:"smooth"}); setMobileOpen(false); };
+  // FIX 5: Close mobile menu on resize to desktop
+  useEffect(() => {
+    const h = () => { if (window.innerWidth > 900) setMobileOpen(false); };
+    window.addEventListener("resize", h);
+    return () => window.removeEventListener("resize", h);
+  }, []);
+
+  // FIX 6: Prevent body scroll when mobile menu is open
+  useEffect(() => {
+    if (mobileOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => { document.body.style.overflow = ""; };
+  }, [mobileOpen]);
+
+  const goTo = id => {
+    document.getElementById(id)?.scrollIntoView({behavior:"smooth"});
+    setMobileOpen(false);
+  };
 
   return (
     <>
       <nav className="nav-bar" style={{
-        position:"fixed",top:0,left:0,right:0,zIndex:200,
-        padding:scrolled?"10px 40px":"18px 40px",
-        background:scrolled?t.navBg:"transparent",
-        backdropFilter:scrolled?"blur(22px)":"none",
-        borderBottom:scrolled?`1px solid ${t.border}`:"none",
-        display:"flex",alignItems:"center",justifyContent:"space-between",
+        position:"fixed", top:0, left:0, right:0, zIndex:200,
+        padding: scrolled ? "10px 40px" : "18px 40px",
+        background: scrolled ? t.navBg : "transparent",
+        backdropFilter: scrolled ? "blur(22px)" : "none",
+        WebkitBackdropFilter: scrolled ? "blur(22px)" : "none",
+        borderBottom: scrolled ? `1px solid ${t.border}` : "none",
+        display:"flex", alignItems:"center", justifyContent:"space-between",
         transition:"all 0.4s ease",
       }}>
-        <div onClick={()=>goTo("home")} style={{cursor:"pointer",display:"flex",alignItems:"center",gap:7}}>
+        <div onClick={()=>goTo("home")} style={{cursor:"pointer",display:"flex",alignItems:"center",gap:7,flexShrink:0}}>
           <span style={{fontFamily:"'Space Mono',monospace",fontSize:21,fontWeight:700}}>
             <span style={{color:t.accent,textShadow:`0 0 14px ${t.accentGlowStrong}`}}>sundar</span>
             <span style={{color:t.text}}>Dev</span>
           </span>
-          <span style={{width:6,height:6,borderRadius:"50%",background:t.accent,boxShadow:`0 0 8px ${t.accent}`,animation:"blink 1.5s infinite"}}/>
+          <span style={{width:6,height:6,borderRadius:"50%",background:t.accent,boxShadow:`0 0 8px ${t.accent}`,animation:"blink 1.5s infinite",flexShrink:0}}/>
         </div>
+
+        {/* Desktop nav */}
         <div className="nav-links" style={{display:"flex",alignItems:"center",gap:28}}>
           {navItems.map(item=>(
             <button key={item} onClick={()=>goTo(item)} style={{
@@ -278,9 +299,14 @@ function Navbar({ theme, t, toggleTheme, activeSection }) {
             {theme==="dark"?"☀ LIGHT":"◉ DARK"}
           </button>
         </div>
+
+        {/* Hamburger */}
         <button className="nav-ham" onClick={()=>setMobileOpen(o=>!o)} style={{
           display:"none",flexDirection:"column",gap:5,
           background:"none",border:"none",cursor:"pointer",padding:4,
+          // FIX 7: Ensure hamburger is always visible and tappable
+          minWidth:32, minHeight:32, alignItems:"center", justifyContent:"center",
+          zIndex:201,
         }}>
           {[0,1,2].map(i=>(
             <span key={i} style={{
@@ -290,12 +316,33 @@ function Navbar({ theme, t, toggleTheme, activeSection }) {
           ))}
         </button>
       </nav>
+
+      {/* Mobile menu overlay */}
       {mobileOpen&&(
-        <div style={{position:"fixed",inset:0,zIndex:199,background:t.bg,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",gap:32}}>
+        <div style={{
+          position:"fixed",inset:0,zIndex:199,
+          background:t.bg,
+          display:"flex",flexDirection:"column",
+          alignItems:"center",justifyContent:"center",gap:32,
+          // FIX 8: Prevent content from going under status bar on iOS
+          paddingTop:"env(safe-area-inset-top)",
+          paddingBottom:"env(safe-area-inset-bottom)",
+        }}>
           {navItems.map(item=>(
-            <button key={item} onClick={()=>goTo(item)} style={{background:"none",border:"none",cursor:"pointer",fontFamily:"'Space Mono',monospace",fontSize:22,letterSpacing:3,color:activeSection===item?t.accent:t.text,textTransform:"uppercase"}}>{item}</button>
+            <button key={item} onClick={()=>goTo(item)} style={{
+              background:"none",border:"none",cursor:"pointer",
+              fontFamily:"'Space Mono',monospace",fontSize:22,letterSpacing:3,
+              color:activeSection===item?t.accent:t.text,
+              textTransform:"uppercase",
+              // FIX 9: Larger tap targets on mobile
+              padding:"8px 24px",
+            }}>{item}</button>
           ))}
-          <button onClick={()=>{toggleTheme();setMobileOpen(false);}} style={{marginTop:16,background:t.accentGlow,border:`1px solid ${t.border}`,borderRadius:20,padding:"10px 28px",cursor:"pointer",color:t.accent,fontFamily:"'Space Mono',monospace",fontSize:13}}>
+          <button onClick={()=>{toggleTheme();setMobileOpen(false);}} style={{
+            marginTop:16,background:t.accentGlow,border:`1px solid ${t.border}`,
+            borderRadius:20,padding:"10px 28px",cursor:"pointer",color:t.accent,
+            fontFamily:"'Space Mono',monospace",fontSize:13,
+          }}>
             {theme==="dark"?"☀ LIGHT MODE":"◉ DARK MODE"}
           </button>
         </div>
@@ -330,31 +377,50 @@ function HeroSection({ t }) {
 
   return (
     <section id="home" className="hero-sec" style={{
-      minHeight:"100vh",background:t.gradientHero,
+      minHeight:"100vh",
+      minHeight:"100svh", // FIX 10: Use svh for mobile browsers (accounts for address bar)
+      background:t.gradientHero,
       display:"flex",alignItems:"center",
-      padding:"0 40px",position:"relative",overflow:"hidden",
+      // FIX 11: Generous top padding so profile image is never hidden under navbar on mobile
+      padding:"100px 40px 60px",
+      position:"relative",overflow:"hidden",
     }}>
+      {/* Grid background */}
       <div style={{
         position:"absolute",inset:0,
         backgroundImage:`linear-gradient(${t.border}66 1px,transparent 1px),linear-gradient(90deg,${t.border}66 1px,transparent 1px)`,
         backgroundSize:"60px 60px",animation:"gridMove 22s linear infinite",
       }}/>
+
+      {/* Orbs - hidden on small mobile via media query to prevent layout issues */}
       {[{w:380,h:380,top:"8%",left:"55%",d:"0s"},{w:240,h:240,top:"62%",left:"8%",d:"1.1s"},{w:160,h:160,top:"28%",left:"78%",d:"0.6s"}].map((o,i)=>(
-        <div key={i} style={{position:"absolute",width:o.w,height:o.h,borderRadius:"50%",background:`radial-gradient(circle,${t.accentGlow} 0%,transparent 70%)`,top:o.top,left:o.left,animation:`floatOrb 9s ease-in-out ${o.d} infinite`,pointerEvents:"none"}}/>
+        <div key={i} style={{
+          position:"absolute",width:o.w,height:o.h,borderRadius:"50%",
+          background:`radial-gradient(circle,${t.accentGlow} 0%,transparent 70%)`,
+          top:o.top,left:o.left,animation:`floatOrb 9s ease-in-out ${o.d} infinite`,
+          pointerEvents:"none",
+          // FIX 12: Clamp orb size so they don't cause horizontal overflow on mobile
+          maxWidth:"60vw", maxHeight:"60vw",
+        }}/>
       ))}
 
-      <div className="hero-grid" style={{maxWidth:1200,margin:"0 auto",width:"100%",display:"grid",gridTemplateColumns:"1fr 1fr",gap:72,alignItems:"center",position:"relative",zIndex:1}}>
+      <div className="hero-grid" style={{
+        maxWidth:1200,margin:"0 auto",width:"100%",
+        display:"grid",gridTemplateColumns:"1fr 1fr",
+        gap:72,alignItems:"center",position:"relative",zIndex:1,
+      }}>
+        {/* Left: Text */}
         <div style={{animation:"slideInL 0.85s ease forwards"}}>
           <div style={{display:"inline-flex",alignItems:"center",gap:8,border:`1px solid ${t.accent}40`,borderRadius:20,padding:"6px 16px",marginBottom:22,background:t.accentGlow,animation:"fadeInUp 0.6s ease 0.2s both"}}>
-            <span style={{width:8,height:8,borderRadius:"50%",background:t.accent,boxShadow:`0 0 10px ${t.accent}`,animation:"blink 1.5s infinite"}}/>
-            <span style={{fontFamily:"'Space Mono',monospace",fontSize:10,color:t.accent,letterSpacing:2}}>AVAILABLE FOR HIRE</span>
+            <span style={{width:8,height:8,borderRadius:"50%",background:t.accent,boxShadow:`0 0 10px ${t.accent}`,animation:"blink 1.5s infinite",flexShrink:0}}/>
+            <span style={{fontFamily:"'Space Mono',monospace",fontSize:10,color:t.accent,letterSpacing:2,whiteSpace:"nowrap"}}>AVAILABLE FOR HIRE</span>
           </div>
-          <h1 style={{fontFamily:"'Syne',sans-serif",fontSize:"clamp(40px,5.8vw,74px)",fontWeight:800,lineHeight:1.05,color:t.text,margin:"0 0 6px",animation:"fadeInUp 0.6s ease 0.3s both"}}>Hi, I'm</h1>
-          <h1 style={{fontFamily:"'Syne',sans-serif",fontSize:"clamp(44px,6.5vw,80px)",fontWeight:800,lineHeight:1,color:t.accent,margin:"0 0 22px",animation:"fadeInUp 0.6s ease 0.4s both",position:"relative",display:"inline-block"}}>
+          <h1 style={{fontFamily:"'Syne',sans-serif",fontSize:"clamp(36px,5.8vw,74px)",fontWeight:800,lineHeight:1.05,color:t.text,margin:"0 0 6px",animation:"fadeInUp 0.6s ease 0.3s both"}}>Hi, I'm</h1>
+          <h1 style={{fontFamily:"'Syne',sans-serif",fontSize:"clamp(40px,6.5vw,80px)",fontWeight:800,lineHeight:1,color:t.accent,margin:"0 0 22px",animation:"fadeInUp 0.6s ease 0.4s both",position:"relative",display:"inline-block"}}>
             Sundar
             <span style={{position:"absolute",bottom:-4,left:0,right:0,height:3,borderRadius:2,background:`linear-gradient(90deg,transparent,${t.accent},transparent)`,backgroundSize:"200% 100%",animation:"shimmer 2.4s linear infinite"}}/>
           </h1>
-          <div style={{fontFamily:"'Space Mono',monospace",fontSize:"clamp(15px,1.8vw,20px)",color:t.textSecondary,marginBottom:28,minHeight:30,animation:"fadeInUp 0.6s ease 0.5s both"}}>
+          <div style={{fontFamily:"'Space Mono',monospace",fontSize:"clamp(13px,1.8vw,20px)",color:t.textSecondary,marginBottom:28,minHeight:30,animation:"fadeInUp 0.6s ease 0.5s both"}}>
             <span style={{color:t.accentDim}}>&gt; </span>
             {typed}
             <span style={{display:"inline-block",width:2,height:"0.9em",background:t.accent,marginLeft:2,verticalAlign:"middle",animation:"blinkCursor 0.7s step-end infinite"}}/>
@@ -379,21 +445,29 @@ function HeroSection({ t }) {
           </div>
         </div>
 
-        <div className="hero-right" style={{display:"flex",justifyContent:"center",alignItems:"center",animation:"slideInR 0.85s ease forwards",position:"relative"}}>
+        {/* Right: Profile image + orbital rings */}
+        <div className="hero-right hero-orb-wrap" style={{
+          display:"flex",justifyContent:"center",alignItems:"center",
+          animation:"slideInR 0.85s ease forwards",position:"relative",
+          // FIX 13: Fixed height container so float-cards don't push layout
+          height:360,
+        }}>
           <div className="pr1" style={{position:"absolute",width:370,height:370,borderRadius:"50%",border:`1px solid ${t.accent}28`,animation:"rotateSlow 22s linear infinite"}}>
             {[0,90,180,270].map(deg=>(
               <span key={deg} style={{position:"absolute",width:9,height:9,borderRadius:"50%",background:t.accent,boxShadow:`0 0 10px ${t.accent}`,top:"50%",left:"50%",transformOrigin:"0 0",transform:`rotate(${deg}deg) translateX(184px) translateY(-50%)`}}/>
             ))}
           </div>
           <div className="pr2" style={{position:"absolute",width:308,height:308,borderRadius:"50%",border:`1px dashed ${t.accent}18`,animation:"rotateSlowR 32s linear infinite"}}/>
-          <div className="pimg" style={{width:265,height:265,borderRadius:"50%",overflow:"hidden",border:`3px solid ${t.accent}`,boxShadow:`0 0 0 8px ${t.accentGlow}, 0 0 55px ${t.accentGlowStrong}`,position:"relative",zIndex:1}}>
+          <div className="pimg" style={{width:265,height:265,borderRadius:"50%",overflow:"hidden",border:`3px solid ${t.accent}`,boxShadow:`0 0 0 8px ${t.accentGlow}, 0 0 55px ${t.accentGlowStrong}`,position:"relative",zIndex:1,flexShrink:0}}>
             <img src={PROFILE_IMG} alt="Sundar" style={{width:"100%",height:"100%",objectFit:"cover",filter:"contrast(1.06) saturate(0.92)"}}/>
           </div>
-          <div style={{position:"absolute",bottom:"6%",left:"-6%",background:t.bgCard,border:`1px solid ${t.border}`,borderRadius:8,padding:"12px 18px",backdropFilter:"blur(12px)",animation:"floatCard 4s ease-in-out infinite",zIndex:2}}>
+
+          {/* FIX 14: Float cards have hero-float-card class; hidden on mobile */}
+          <div className="hero-float-card" style={{position:"absolute",bottom:"-8%",left:"-10%",background:t.bgCard,border:`1px solid ${t.border}`,borderRadius:8,padding:"12px 18px",backdropFilter:"blur(12px)",WebkitBackdropFilter:"blur(12px)",animation:"floatCard 4s ease-in-out infinite",zIndex:2}}>
             <div style={{fontFamily:"'Space Mono',monospace",fontSize:20,fontWeight:700,color:t.accent}}>50+</div>
             <div style={{fontFamily:"'DM Sans',sans-serif",fontSize:11,color:t.textMuted,marginTop:2}}>Projects Delivered</div>
           </div>
-          <div style={{position:"absolute",top:"4%",right:"-6%",background:t.bgCard,border:`1px solid ${t.border}`,borderRadius:8,padding:"12px 18px",backdropFilter:"blur(12px)",animation:"floatCard 4s ease-in-out 1.1s infinite",zIndex:2}}>
+          <div className="hero-float-card" style={{position:"absolute",top:"-8%",right:"-10%",background:t.bgCard,border:`1px solid ${t.border}`,borderRadius:8,padding:"12px 18px",backdropFilter:"blur(12px)",WebkitBackdropFilter:"blur(12px)",animation:"floatCard 4s ease-in-out 1.1s infinite",zIndex:2}}>
             <div style={{fontFamily:"'Space Mono',monospace",fontSize:20,fontWeight:700,color:t.accent}}>4yr</div>
             <div style={{fontFamily:"'DM Sans',sans-serif",fontSize:11,color:t.textMuted,marginTop:2}}>Experience</div>
           </div>
@@ -411,7 +485,7 @@ function SectionHeader({number,eyebrow,title,accent,t}){
   return (
     <div className="reveal reveal-up" style={{textAlign:"center",marginBottom:72}}>
       <span style={{fontFamily:"'Space Mono',monospace",fontSize:10,color:t.accent,letterSpacing:4}}>{number}. {eyebrow}</span>
-      <h2 style={{fontFamily:"'Syne',sans-serif",fontSize:"clamp(32px,4.5vw,54px)",fontWeight:800,color:t.text,margin:"10px 0 0"}}>
+      <h2 style={{fontFamily:"'Syne',sans-serif",fontSize:"clamp(28px,4.5vw,54px)",fontWeight:800,color:t.text,margin:"10px 0 0"}}>
         {title} <span style={{color:t.accent}}>{accent}</span>
       </h2>
     </div>
@@ -528,8 +602,6 @@ function ProjectsSection({t}){
             <ProjectCard key={p.title} p={p} i={i} t={t} hov={hov} setHov={setHov}/>
           ))}
         </div>
-
-        {/* View All / Show Less toggle */}
         <div className="reveal reveal-up" style={{textAlign:"center",marginTop:52}}>
           {!showAll ? (
             <div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:14}}>
@@ -543,16 +615,7 @@ function ProjectsSection({t}){
               </p>
               <button
                 onClick={()=>setShowAll(true)}
-                style={{
-                  display:"inline-flex",alignItems:"center",gap:10,
-                  background:"transparent",border:`1px solid ${t.accent}`,
-                  borderRadius:4,padding:"14px 36px",
-                  color:t.accent,fontFamily:"'Space Mono',monospace",
-                  fontSize:12,fontWeight:700,letterSpacing:1.5,
-                  cursor:"pointer",textTransform:"uppercase",
-                  transition:"all 0.3s ease",
-                  position:"relative",overflow:"hidden",
-                }}
+                style={{display:"inline-flex",alignItems:"center",gap:10,background:"transparent",border:`1px solid ${t.accent}`,borderRadius:4,padding:"14px 36px",color:t.accent,fontFamily:"'Space Mono',monospace",fontSize:12,fontWeight:700,letterSpacing:1.5,cursor:"pointer",textTransform:"uppercase",transition:"all 0.3s ease"}}
                 onMouseEnter={e=>{e.currentTarget.style.background=t.accentGlow;e.currentTarget.style.boxShadow=`0 0 24px ${t.accentGlowStrong}`;e.currentTarget.style.transform="translateY(-2px)";}}
                 onMouseLeave={e=>{e.currentTarget.style.background="transparent";e.currentTarget.style.boxShadow="none";e.currentTarget.style.transform="translateY(0)";}}
               >
@@ -564,15 +627,7 @@ function ProjectsSection({t}){
           ) : (
             <button
               onClick={()=>setShowAll(false)}
-              style={{
-                display:"inline-flex",alignItems:"center",gap:10,
-                background:t.accentGlow,border:`1px solid ${t.border}`,
-                borderRadius:4,padding:"12px 30px",
-                color:t.textMuted,fontFamily:"'Space Mono',monospace",
-                fontSize:12,letterSpacing:1,
-                cursor:"pointer",textTransform:"uppercase",
-                transition:"all 0.3s ease",
-              }}
+              style={{display:"inline-flex",alignItems:"center",gap:10,background:t.accentGlow,border:`1px solid ${t.border}`,borderRadius:4,padding:"12px 30px",color:t.textMuted,fontFamily:"'Space Mono',monospace",fontSize:12,letterSpacing:1,cursor:"pointer",textTransform:"uppercase",transition:"all 0.3s ease"}}
               onMouseEnter={e=>{e.currentTarget.style.borderColor=t.accent;e.currentTarget.style.color=t.accent;}}
               onMouseLeave={e=>{e.currentTarget.style.borderColor=t.border;e.currentTarget.style.color=t.textMuted;}}
             >
@@ -620,7 +675,6 @@ function PricingSection({t}){
                   border:`1px solid ${isPop||isH?t.accent:t.border}`,
                   borderRadius:8,padding:"38px 30px",position:"relative",overflow:"hidden",
                   transition:"all 0.32s ease",
-                  transform:isPop?"scale(1.04)":isH?"translateY(-6px)":"translateY(0)",
                   boxShadow:isPop?`0 0 0 1px ${t.accent}40,0 28px 70px ${t.accentGlowStrong}`:isH?`0 14px 44px ${t.accentGlow}`:"none",
                 }}>
                 {isPop&&<div style={{position:"absolute",top:0,left:0,right:0,height:3,background:`linear-gradient(90deg,${t.accentDim},${t.accent},${t.accentLight})`,boxShadow:`0 0 14px ${t.accent}`}}/>}
@@ -670,7 +724,7 @@ function ContactSection({t}){
       <div style={{maxWidth:780,margin:"0 auto",textAlign:"center"}}>
         <div className="reveal reveal-up">
           <span style={{fontFamily:"'Space Mono',monospace",fontSize:10,color:t.accent,letterSpacing:4}}>04. GET IN TOUCH</span>
-          <h2 style={{fontFamily:"'Syne',sans-serif",fontSize:"clamp(34px,5vw,58px)",fontWeight:800,color:t.text,margin:"10px 0 18px"}}>
+          <h2 style={{fontFamily:"'Syne',sans-serif",fontSize:"clamp(30px,5vw,58px)",fontWeight:800,color:t.text,margin:"10px 0 18px"}}>
             Let's Build<br/><span style={{color:t.accent}}>Something Great</span>
           </h2>
           <p style={{color:t.textMuted,fontSize:15,lineHeight:1.85,fontFamily:"'DM Sans',sans-serif",maxWidth:500,margin:"0 auto 52px"}}>
@@ -698,7 +752,7 @@ function ContactSection({t}){
           </a>
         </div>
         <div className="reveal reveal-fade" data-delay="250" style={{display:"inline-flex",alignItems:"center",gap:9,border:`1px solid ${t.border}`,borderRadius:24,padding:"9px 22px",background:t.accentGlow}}>
-          <span style={{width:7,height:7,borderRadius:"50%",background:t.accent,boxShadow:`0 0 9px ${t.accent}`,animation:"blink 1.5s infinite"}}/>
+          <span style={{width:7,height:7,borderRadius:"50%",background:t.accent,boxShadow:`0 0 9px ${t.accent}`,animation:"blink 1.5s infinite",flexShrink:0}}/>
           <span style={{fontFamily:"'Space Mono',monospace",fontSize:11,color:t.textSecondary,letterSpacing:0.8}}>Currently available for new projects</span>
         </div>
       </div>
@@ -737,7 +791,6 @@ export default function FreeLance() {
   useGlobalStyles(t);
   useScrollReveal();
 
-  // Lock body scroll during loading, reset to top when done
   useEffect(() => {
     document.body.classList.add("loading");
     return () => document.body.classList.remove("loading");
