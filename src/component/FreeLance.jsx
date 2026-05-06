@@ -461,7 +461,7 @@ function HeroSection({ t }) {
             ))}
           </div>
           <div className="pr2" style={{position:"absolute",width:308,height:308,borderRadius:"50%",border:`1px dashed ${t.accent}18`,animation:"rotateSlowR 32s linear infinite"}}/>
-          <div className="pimg" style={{width:365,height:365,borderRadius:"50%",overflow:"hidden",border:`3px solid ${t.accent}`,boxShadow:`0 0 0 8px ${t.accentGlow}, 0 0 55px ${t.accentGlowStrong}`,position:"relative",zIndex:1,flexShrink:0}}>
+          <div className="pimg" style={{width:300,height:300,borderRadius:"50%",overflow:"hidden",border:`3px solid ${t.accent}`,boxShadow:`0 0 0 8px ${t.accentGlow}, 0 0 55px ${t.accentGlowStrong}`,position:"relative",zIndex:1,flexShrink:0}}>
             <img src={PROFILE_IMG} alt="Sundar" style={{width:"100%",height:"100%",objectFit:"cover",filter:"contrast(1.06) saturate(0.92)"}}/>
           </div>
 
@@ -524,7 +524,7 @@ function AboutSection({t}){
           </div>
           <div className="reveal reveal-right" data-delay="100">
             <p style={{color:t.textSecondary,fontSize:16,lineHeight:1.9,fontFamily:"'DM Sans',sans-serif",marginBottom:28}}>
-              I'm <strong style={{color:t.accent}}>Sundar</strong>, a passionate MERN Stack Developer from Chennai, India with 4+ years of experience building full-stack web applications. I specialise in transforming complex business requirements into clean, scalable code.
+              I'm <strong style={{color:t.accent}}>Sundar</strong>, a passionate MERN Stack Developer from Tirunelveli, India with 4+ years of experience building full-stack web applications. I specialise in transforming complex business requirements into clean, scalable code.
             </p>
             <p style={{color:t.textMuted,fontSize:14,lineHeight:1.8,fontFamily:"'DM Sans',sans-serif",marginBottom:36}}>
               From crafting pixel-perfect React interfaces to designing fault-tolerant Node.js APIs, I bring end-to-end ownership to every project. I thrive in collaborative environments and love turning ideas into real, working products.
@@ -641,12 +641,12 @@ function ProjectsSection({t}){
 
 // ─── Pricing ──────────────────────────────────────────────────────────────────
 const PLANS=[
-  {name:"Starter",price:"₹15,000",period:"/ project",badge:null,
-   features:["Single page website","Responsive design","Basic React frontend","Contact form integration","1 revision round","5-day delivery"],cta:"Get Started"},
-  {name:"Professional",price:"₹45,000",period:"/ project",badge:"BEST CHOICE",
-   features:["Full MERN stack app","REST API development","MongoDB database design","JWT Authentication","Admin dashboard","3 revision rounds","14-day delivery","1 month free support"],cta:"Start Project"},
-  {name:"Enterprise",price:"Custom",period:"/ quote",badge:null,
-   features:["Complex web applications","Microservices architecture","GraphQL / REST APIs","Redis caching & queues","Docker & CI/CD setup","Unlimited revisions","Dedicated support","NDA available"],cta:"Let's Talk"},
+  {name:"landing Page",price:"₹4,000",period:"/ project",badge:null,
+   features:["Upto 5 pages website","Responsive design","Basic React frontend","Contact form integration","1 revision round (within 1 week)","5-day delivery"],cta:"Get Started"},
+  {name:"Full Stack",price:"₹10,000",period:"/ project",badge:"BEST CHOICE",
+   features:["Full MERN stack app","REST API development","MongoDB database design","JWT Authentication","Admin dashboard","3 revision rounds (within 1 month)","14-day delivery","1 month free support"],cta:"Start Project"},
+  {name:"Portfolio",price:"₹2000",period:"/ project",badge:null,
+   features:["Single Page Website","Tailwind Design","Basic React Frontend","Contact form integration","Use netlify for Hosting (free)"],cta:"Let's Talk"},
 ];
 
 function PricingSection({t}){
@@ -715,8 +715,8 @@ function PricingSection({t}){
 
 // ─── Contact ──────────────────────────────────────────────────────────────────
 function ContactSection({t}){
-  const email="sundar@sundardev.in";
-  const wa="https://wa.me/919876543210?text=Hi%20Sundar!%20I%20saw%20your%20portfolio%20and%20I%27d%20like%20to%20discuss%20a%20project.";
+  const email="sundarkandan23506@gmail.com";
+  const wa="https://wa.me/919597732047?text=Hi%20Sundar!%20I%20saw%20your%20portfolio%20and%20I%27d%20like%20to%20discuss%20a%20project.";
   return (
     <section id="contact" className="sec-pad" style={{padding:"110px 40px",background:t.bg,position:"relative"}}>
       <SectionDivider t={t}/>
@@ -746,7 +746,7 @@ function ContactSection({t}){
             <div style={{width:48,height:48,borderRadius:"50%",background:"rgba(37,211,102,0.1)",border:"1px solid rgba(37,211,102,0.28)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:20}}>💬</div>
             <div>
               <div style={{fontFamily:"'Space Mono',monospace",fontSize:10,color:"#25D366",letterSpacing:2,textTransform:"uppercase",marginBottom:5}}>WhatsApp</div>
-              <div style={{fontFamily:"'DM Sans',sans-serif",fontSize:12,color:t.textSecondary}}>+91 98765 43210</div>
+              <div style={{fontFamily:"'DM Sans',sans-serif",fontSize:12,color:t.textSecondary}}>+91 95977 32047</div>
             </div>
           </a>
         </div>

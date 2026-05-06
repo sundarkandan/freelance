@@ -4,12 +4,22 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Sun, Moon, ExternalLink, Globe } from 'lucide-react'; // Added icons
 
 // Imports for images
+import advocate from './portfolio_advocate.png'
 import AIBuilder from './AIBuilder.png';
 import att from './attendance.png';
 import movie from './movie.png';
 import mern_Portfolio from "./mern_portfolio.png"
 import food_landing from "./food_landing.png"
-
+import coffee from "./coffee.png"
+import editor from "./editor.png"
+import gym from "./gym.png"
+import hair from "./hair.png"
+import mech from "./mech.png"
+import shoe from "./shoe.png"
+import theatre from "./theatre.png"
+import college from "./college.png"
+import photo from "./photo_graphy.png"
+import icecream from "./ice cream.jpg"
 const AllProjects = () => {
     const [darkMode, setDarkMode] = useState(true);
     const [searchTerm, setSearchTerm] = useState("");
@@ -26,54 +36,149 @@ const AllProjects = () => {
         border: darkMode ? "#242c24" : "#e2e8f0",
         accent: "#22c55e", 
     };
-
-    const allProjects = [
-        { 
-            id: 1, 
-            name: "AI Website Designer", 
-            img: AIBuilder, 
-            dis: "High-performance AI engine generating professional landing pages via prompts.", 
-            tags: ["MongoDB", "React", "Node"], 
-            category: "Full Stack",
-            demoLink: "https://your-demo-link.com" // Live Link
-        },
-        { 
-            id: 2, 
-            name: "Movie Booking Pro", 
-            img: movie, 
-            dis: "Real-time seat selection and ticket management system with secure checkout.", 
-            tags: ["React", "Express", "Node"], 
-            category: "Full Stack",
-            demoLink: null // Not Available
-        },
-        { 
-            id: 3, 
-            name: "Attendance Master", 
-            img: att, 
-            dis: "Smart student tracking system with automated reporting and analytics.", 
-            tags: ["MongoDB", "Node", "Tailwind"], 
-            category: "Full Stack",
-            demoLink: "https://your-demo-link.com" 
-        },
-        { 
-            id: 4, 
-            name: "Gourmet Shop", 
-            img: food_landing, 
-            dis: "Premium food delivery landing page with high-conversion UI elements.", 
-            tags: ["React", "tailwind"], 
-            category: "Landing Page",
-            demoLink: "https://your-demo-link.com"
-        },
-        { 
-            id: 5, 
-            name: "Developer Portfolio", 
-            img: mern_Portfolio, 
-            dis: "A sleek, dark-themed showcase for full-stack developers and creators.", 
-            tags: ["React", "Tailwind"], 
-            category: "Portfolio",
-            demoLink: null 
-        }
-    ];
+const handleOrderClick = (projectName) => {
+    const phoneNumber = "919597732047";
+    const message = `Hello Sundar! I'm interested in your project: *${projectName}*. Could you provide more details about the features and pricing?`;
+    const encodedMessage = encodeURIComponent(message);
+    window.open(`https://wa.me/${phoneNumber}?text=${encodedMessage}`, '_blank');
+};
+  const allProjects = [
+    {
+        id: 1, 
+        name: "Landing page for movie Theatre", 
+        img: theatre, 
+        dis: "Immersive cinematic experience for modern movie discovery.", 
+        tags: ["html", "Tailwind"], 
+        category: "Landing Page",
+        demoLink: "https://singular-selkie-1eb9fc.netlify.app/" 
+    },
+    {
+        id: 2, 
+        name: "Portfoio website for Photographer", 
+        img: photo, 
+        dis: "Elegant visual gallery showcasing professional photographic mastery.", 
+        tags: ["html", "Tailwind"], 
+        category: "Portfolio",
+        demoLink: "https://fancy-melba-fa3b19.netlify.app/" 
+    },
+    { 
+        id: 3, 
+        name: "Developer Portfolio", 
+        img: mern_Portfolio, 
+        dis: "Sleek digital stage for full-stack technical excellence.", 
+        tags: ["html", "Tailwind"], 
+        category: "Portfolio",
+        demoLink: "https://phenomenal-piroshki-2d6071.netlify.app/" 
+    },
+    {
+        id: 4, 
+        name: "Portfolio for Video Editor", 
+        img: editor, 
+        dis: "High-impact gallery spotlighting cinematic storytelling skills.", 
+        tags: ["html", "Tailwind"], 
+        category: "Portfolio",
+        demoLink: "https://incomparable-frangollo-559c21.netlify.app/" 
+    },
+    {
+        id: 5, 
+        name: "Coffee Shop Landing Page", 
+        img: coffee, 
+        dis: "Immersive digital experience for modern coffee connoisseurs.", 
+        tags: ["html", "Tailwind"], 
+        category: "Landing Page",
+        demoLink: "https://resilient-vacherin-853bc8.netlify.app/" 
+    },
+    {
+        id: 6, 
+        name: "Landing page for Saloon", 
+        img: hair, 
+        dis: "Refined digital concierge for luxury grooming services.", 
+        tags: ["html", "Tailwind"], 
+        category: "Landing Page",
+        demoLink: "https://gorgeous-starship-134b4e.netlify.app/" 
+    },
+    {
+        id: 7, 
+        name: "Portfolio for Advocate", 
+        img: advocate, 
+        dis: "Authoritative digital presence tailored for legal professionals.", 
+        tags: ["html", "Tailwind"], 
+        category: "Portfolio",
+        demoLink: "https://luminous-souffle-3499c1.netlify.app/" 
+    },
+    {
+        id: 8, 
+        name: "Landing page for GYM", 
+        img: gym, 
+        dis: "High-energy interface engineered to drive fitness memberships.", 
+        tags: ["html", "Tailwind"], 
+        category: "Landing Page",
+        demoLink: "https://astonishing-granita-4062e4.netlify.app/" 
+    },
+    { 
+        id: 9, 
+        name: "AI Website Designer", 
+        img: AIBuilder, 
+        dis: "Intelligent engine generating production-ready landing pages.", 
+        tags: ["MongoDB", "React", "Node"], 
+        category: "Full Stack",
+        demoLink: null 
+    },
+    { 
+        id: 10, 
+        name: "Movie Booking Pro", 
+        img: movie, 
+        dis: "Sophisticated reservation system with real-time seat mapping.", 
+        tags: ["React", "Express", "Node"], 
+        category: "Full Stack",
+        demoLink: null 
+    },
+    { 
+        id: 11, 
+        name: "Attendance Master", 
+        img: att, 
+        dis: "Advanced tracking system with automated student analytics.", 
+        tags: ["MongoDB", "Node", "Tailwind"], 
+        category: "Full Stack",
+        demoLink: null
+    },
+    { 
+        id: 12, 
+        name: "Gourmet Shop", 
+        img: food_landing, 
+        dis: "Stunning culinary storefront with conversion-optimized UI.", 
+        tags: ["html", "tailwind"], 
+        category: "Landing Page",
+        demoLink: null
+    },
+    {
+        id: 13, 
+        name: "Landing page for Shoe Shop", 
+        img: shoe, 
+        dis: "Premium retail experience for modern footwear enthusiasts.", 
+        tags: ["html", "Tailwind"], 
+        category: "Landing Page",
+        demoLink: "https://astounding-monstera-550d6f.netlify.app/" 
+    },
+    {
+        id: 14, 
+        name: "Landing page for College", 
+        img: college, 
+        dis: "Modern academic portal fostering seamless student engagement.", 
+        tags: ["html", "Tailwind"], 
+        category: "Landing Page",
+        demoLink: "https://regal-concha-3b58ea.netlify.app/" 
+    },
+    {
+        id: 15, 
+        name: "Landing page for Ice Cream Parlour", 
+        img: icecream, 
+        dis: "Vibrant digital storefront for premium dessert discovery.", 
+        tags: ["html", "Tailwind"], 
+        category: "Landing Page",
+        demoLink: "https://magenta-stroopwafel-b36ac6.netlify.app/" 
+    }
+];
 
     const filteredProjects = allProjects.filter(project => {
         const matchesSearch = project.name.toLowerCase().includes(searchTerm.toLowerCase());
@@ -106,7 +211,7 @@ const AllProjects = () => {
                     </Link>
 
                     <div className="flex items-center gap-6">
-                        <div className="hidden md:block text-[11px] font-black tracking-[0.3em] uppercase opacity-40">SundarDev</div>
+                        <div className="hidden md:block text-[11px] font-black tracking-[0.3em] uppercase opacity-40">total Project count : {allProjects.length}</div>
                         <button 
                             onClick={() => setDarkMode(!darkMode)}
                             className="p-3 rounded-full transition-all hover:scale-110 active:scale-95 border"
@@ -231,33 +336,64 @@ const AllProjects = () => {
                                     </div>
 
                                     {/* --- NEW BUTTON SECTION --- */}
-                                    <div className="mt-auto">
-                                        {project.demoLink ? (
-                                            <a 
-                                                href={project.demoLink}
-                                                target="_blank"
-                                                rel="noopener noreferrer"
-                                                className="flex items-center justify-center gap-2 w-full py-4 rounded-2xl font-bold text-sm transition-all hover:opacity-90 active:scale-95 text-white"
-                                                style={{ backgroundColor: theme.accent }}
-                                            >
-                                                <Globe size={16} />
-                                                Live Demo
-                                                <ExternalLink size={14} />
-                                            </a>
-                                        ) : (
-                                            <button 
-                                                disabled
-                                                className="flex items-center justify-center gap-2 w-full py-4 rounded-2xl font-bold text-sm opacity-50 cursor-not-allowed border-2 transition-all"
-                                                style={{ 
-                                                    borderColor: theme.border,
-                                                    color: theme.text,
-                                                    backgroundColor: darkMode ? "#1c251c" : "#f1f5f1"
-                                                }}
-                                            >
-                                                Demo Not Available
-                                            </button>
-                                        )}
-                                    </div>
+                                   {/* --- NEW BUTTON SECTION --- */}
+<div className="mt-auto flex flex-col gap-3">
+    {/* WhatsApp Inquiry Button */}
+    {/* --- UPDATED BUTTON SECTION --- */}
+{/* --- UPDATED BUTTON SECTION WITH HOVER ANIMATIONS --- */}
+<div className="mt-auto flex flex-col gap-3">
+    
+    {/* Primary Action: Live Demo */}
+    {project.demoLink ? (
+        <motion.a 
+            href={project.demoLink}
+            target="_blank"
+            rel="noopener noreferrer"
+            whileHover={{ 
+                scale: 1.03,
+                boxShadow: `0 15px 30px -10px ${theme.accent}aa`,
+                filter: "brightness(1.1)"
+            }}
+            whileTap={{ scale: 0.97 }}
+            className="flex items-center justify-center gap-2 w-full py-4 rounded-2xl font-bold text-sm transition-all text-white"
+            style={{ 
+                backgroundColor: theme.accent,
+            }}
+        >
+            <Globe size={16} />
+            View Live Demo
+            <ExternalLink size={14} />
+        </motion.a>
+    ) : (
+        <div 
+            className="flex items-center justify-center gap-2 w-full py-4 rounded-2xl font-bold text-sm opacity-40 border-2 border-dashed"
+            style={{ borderColor: theme.border, color: theme.text }}
+        >
+            Preview not Avaliable
+        </div>
+    )}
+
+    {/* Secondary Action: WhatsApp (Outline Style) */}
+    <motion.button 
+        onClick={() => handleOrderClick(project.name)}
+        whileHover={{ 
+            scale: 1.03,
+            backgroundColor: "#25D366", // Hover pannும்போது solid green-ah maarum
+            color: "#ffffff" 
+        }}
+        whileTap={{ scale: 0.97 }}
+        className="flex items-center justify-center gap-2 w-full py-3.5 rounded-2xl font-bold text-sm transition-all border-2"
+        style={{ 
+            borderColor: "#25D366", 
+            color: "#25D366",
+            backgroundColor: "transparent" 
+        }}
+    >
+       
+        Inquire via WhatsApp
+    </motion.button>
+</div>
+</div>
                                     {/* -------------------------- */}
                                 </div>
                             </motion.div>
