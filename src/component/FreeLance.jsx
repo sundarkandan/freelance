@@ -768,10 +768,10 @@ function Footer({t}){
         <span style={{fontFamily:"'Space Mono',monospace",fontSize:14,fontWeight:700,color:t.accent}}>sundarDev</span>
         <span style={{fontFamily:"'DM Sans',sans-serif",fontSize:12,color:t.textMuted}}>© 2025 Sundar. All rights reserved.</span>
         <div style={{display:"flex",gap:16}}>
-          {["GitHub","LinkedIn","Twitter"].map(s=>(
-            <a key={s} href="#" style={{fontFamily:"'Space Mono',monospace",fontSize:10,color:t.textMuted,textDecoration:"none",letterSpacing:1,transition:"color 0.2s"}}
+          {[{text:"GitHub" ,urls:"https://github.com/sundarkandan/"},{text:"LinkedIn",urls:"https://www.linkedin.com/in/sundar-kandan/"},{text:"Instagram",urls:"https://www.instagram.com/sundardev_2006/"}].map(s=>(
+            <a className="cursor-pointer" key={s} onClick={()=>window.open(s.urls)} style={{fontFamily:"'Space Mono',monospace",fontSize:10,color:t.textMuted,textDecoration:"none",letterSpacing:1,transition:"color 0.2s"}}
               onMouseEnter={e=>e.target.style.color=t.accent}
-              onMouseLeave={e=>e.target.style.color=t.textMuted}>{s}</a>
+              onMouseLeave={e=>e.target.style.color=t.textMuted}>{s.text}</a>
           ))}
         </div>
       </div>
