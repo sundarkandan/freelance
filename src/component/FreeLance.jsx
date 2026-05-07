@@ -8,6 +8,7 @@ import AIBuilder from "./AIBuilder.png"
 import food from "./food_landing.png"
 import portfolio from "./mern_portfolio.png"
 import advocate from "./portfolio_advocate.png"
+import Resume from "./K_Sundar_MERN_Stack_Developer_Resume.pdf"
 // ─── Theme ────────────────────────────────────────────────────────────────────
 const themes = {
   dark: {
@@ -436,10 +437,10 @@ function HeroSection({ t }) {
               onMouseEnter={e=>{e.currentTarget.style.transform="translateY(-2px)";e.currentTarget.style.boxShadow=`0 8px 32px ${t.accentGlowStrong}`;}}
               onMouseLeave={e=>{e.currentTarget.style.transform="translateY(0)";e.currentTarget.style.boxShadow=`0 4px 22px ${t.accentGlowStrong}`;}}
             >View Projects</button>
-            <button onClick={()=>goTo("contact")} style={{background:"transparent",border:`1px solid ${t.accent}`,borderRadius:4,padding:"13px 30px",color:t.accent,fontFamily:"'Space Mono',monospace",fontSize:12,fontWeight:700,letterSpacing:1,cursor:"pointer",textTransform:"uppercase",transition:"all 0.3s ease"}}
+            <button onClick={()=>window.open(Resume)} style={{background:"transparent",border:`1px solid ${t.accent}`,borderRadius:4,padding:"13px 30px",color:t.accent,fontFamily:"'Space Mono',monospace",fontSize:12,fontWeight:700,letterSpacing:1,cursor:"pointer",textTransform:"uppercase",transition:"all 0.3s ease"}}
               onMouseEnter={e=>{e.currentTarget.style.background=t.accentGlow;}}
               onMouseLeave={e=>{e.currentTarget.style.background="transparent";}}
-            >Hire Me</button>
+            >Resume</button>
           </div>
           <div className="hero-bdgs" style={{display:"flex",gap:8,flexWrap:"wrap",marginTop:44,animation:"fadeInUp 0.6s ease 0.8s both"}}>
             {["MongoDB","Express","React","Node.js","TypeScript","REST API"].map(tech=>(
@@ -518,7 +519,7 @@ function AboutSection({t}){
               <div style={{position:"absolute",inset:0,background:`linear-gradient(180deg,transparent 55%,${t.bg}bb 100%)`}}/>
             </div>
             <div style={{position:"absolute",bottom:-28,right:-8,zIndex:2,background:t.accent,borderRadius:4,padding:"14px 22px",textAlign:"center"}}>
-              <div style={{fontFamily:"'Syne',sans-serif",fontSize:28,fontWeight:800,color:"#fff",lineHeight:1}}>4+</div>
+              <div style={{fontFamily:"'Syne',sans-serif",fontSize:28,fontWeight:800,color:"#fff",lineHeight:1}}>2+</div>
               <div style={{fontFamily:"'Space Mono',monospace",fontSize:9,color:"rgba(255,255,255,0.85)",letterSpacing:1.5,marginTop:4}}>YEARS EXP</div>
             </div>
           </div>
