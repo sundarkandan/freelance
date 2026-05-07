@@ -525,7 +525,7 @@ function AboutSection({t}){
           </div>
           <div className="reveal reveal-right" data-delay="100">
             <p style={{color:t.textSecondary,fontSize:16,lineHeight:1.9,fontFamily:"'DM Sans',sans-serif",marginBottom:28}}>
-              I'm <strong style={{color:t.accent}}>Sundar</strong>, a passionate MERN Stack Developer from Tirunelveli, India with 4+ years of experience building full-stack web applications. I specialise in transforming complex business requirements into clean, scalable code.
+              I'm <strong style={{color:t.accent}}>Sundar</strong>, a passionate MERN Stack Developer from Tirunelveli, India with 2+ years of experience building full-stack web applications. I specialise in transforming complex business requirements into clean, scalable code.
             </p>
             <p style={{color:t.textMuted,fontSize:14,lineHeight:1.8,fontFamily:"'DM Sans',sans-serif",marginBottom:36}}>
               From crafting pixel-perfect React interfaces to designing fault-tolerant Node.js APIs, I bring end-to-end ownership to every project. I thrive in collaborative environments and love turning ideas into real, working products.
