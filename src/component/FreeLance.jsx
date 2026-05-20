@@ -182,8 +182,8 @@ function LoadingScreen({ progress, done }) {
         animation: "loadIn 0.8s cubic-bezier(0.22,1,0.36,1) 0.1s forwards",
         marginBottom: 10,
       }}>
-        <span style={{ color: "#22c55e", textShadow: "0 0 28px rgba(34,197,94,0.55)" }}>sundar</span>
-        <span style={{ color: "#e4f4e4" }}>Dev</span>
+        <span style={{ color: "#22c55e", textShadow: "0 0 28px rgba(34,197,94,0.55)" }}>Welcome</span>
+        
       </div>
       <div style={{
         fontFamily: "'Space Mono', monospace",
@@ -279,7 +279,7 @@ function Navbar({ theme, t, toggleTheme, activeSection }) {
         <div onClick={()=>goTo("home")} style={{cursor:"pointer",display:"flex",alignItems:"center",gap:7,flexShrink:0}}>
           <span style={{fontFamily:"'Space Mono',monospace",fontSize:21,fontWeight:700}}>
             <span style={{color:t.accent,textShadow:`0 0 14px ${t.accentGlowStrong}`}}>sundar</span>
-            <span style={{color:t.text}}>Dev</span>
+           
           </span>
           <span style={{width:6,height:6,borderRadius:"50%",background:t.accent,boxShadow:`0 0 8px ${t.accent}`,animation:"blink 1.5s infinite",flexShrink:0}}/>
         </div>
@@ -519,8 +519,8 @@ function AboutSection({t}){
               <div style={{position:"absolute",inset:0,background:`linear-gradient(180deg,transparent 55%,${t.bg}bb 100%)`}}/>
             </div>
             <div style={{position:"absolute",bottom:-28,right:-8,zIndex:2,background:t.accent,borderRadius:4,padding:"14px 22px",textAlign:"center"}}>
-              <div style={{fontFamily:"'Syne',sans-serif",fontSize:28,fontWeight:800,color:"#fff",lineHeight:1}}>2+</div>
-              <div style={{fontFamily:"'Space Mono',monospace",fontSize:9,color:"rgba(255,255,255,0.85)",letterSpacing:1.5,marginTop:4}}>YEARS EXP</div>
+              <div style={{fontFamily:"'Syne',sans-serif",fontSize:28,fontWeight:800,color:"#fff",lineHeight:1}}>3</div>
+              <div style={{fontFamily:"'Space Mono',monospace",fontSize:9,color:"rgba(255,255,255,0.85)",letterSpacing:1.5,marginTop:4}}>MAJOR PROJECTS</div>
             </div>
           </div>
           <div className="reveal reveal-right" data-delay="100">
@@ -765,10 +765,10 @@ function Footer({t}){
   return (
     <footer style={{padding:"26px 40px",background:t.bgSecondary,borderTop:`1px solid ${t.border}`}}>
       <div className="foot-inner reveal reveal-fade" style={{display:"flex",justifyContent:"space-between",alignItems:"center",flexWrap:"wrap",gap:10}}>
-        <span style={{fontFamily:"'Space Mono',monospace",fontSize:14,fontWeight:700,color:t.accent}}>sundarDev</span>
+        <span style={{fontFamily:"'Space Mono',monospace",fontSize:14,fontWeight:700,color:t.accent}}>sundar</span>
         <span style={{fontFamily:"'DM Sans',sans-serif",fontSize:12,color:t.textMuted}}>© 2025 Sundar. All rights reserved.</span>
         <div style={{display:"flex",gap:16}}>
-          {[{text:"GitHub" ,urls:"https://github.com/sundarkandan/"},{text:"LinkedIn",urls:"https://www.linkedin.com/in/sundar-kandan/"},{text:"Instagram",urls:"https://www.instagram.com/sundardev_2006/"}].map(s=>(
+          {[{text:"GitHub" ,urls:"https://github.com/sundarkandan/"},{text:"LinkedIn",urls:"https://www.linkedin.com/in/sundar-kandan/"},{text:"Instagram",urls:"https://www.instagram.com/sundar_2006/"}].map(s=>(
             <a className="cursor-pointer" key={s} onClick={()=>window.open(s.urls)} style={{fontFamily:"'Space Mono',monospace",fontSize:10,color:t.textMuted,textDecoration:"none",letterSpacing:1,transition:"color 0.2s"}}
               onMouseEnter={e=>e.target.style.color=t.accent}
               onMouseLeave={e=>e.target.style.color=t.textMuted}>{s.text}</a>
