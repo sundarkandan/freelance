@@ -468,12 +468,12 @@ function HeroSection({ t }) {
 
           {/* FIX 14: Float cards have hero-float-card class; hidden on mobile */}
           <div className="hero-float-card" style={{position:"absolute",bottom:"-8%",left:"-10%",background:t.bgCard,border:`1px solid ${t.border}`,borderRadius:8,padding:"12px 18px",backdropFilter:"blur(12px)",WebkitBackdropFilter:"blur(12px)",animation:"floatCard 4s ease-in-out infinite",zIndex:2}}>
-            <div style={{fontFamily:"'Space Mono',monospace",fontSize:20,fontWeight:700,color:t.accent}}>0</div>
-            <div style={{fontFamily:"'DM Sans',sans-serif",fontSize:11,color:t.textMuted,marginTop:2}}>Projects Delivered</div>
+            <div style={{fontFamily:"'Space Mono',monospace",fontSize:20,fontWeight:700,color:t.accent}}>10+</div>
+            <div style={{fontFamily:"'DM Sans',sans-serif",fontSize:11,color:t.textMuted,marginTop:2}}>UI Designs</div>
           </div>
           <div className="hero-float-card" style={{position:"absolute",top:"-8%",right:"-10%",background:t.bgCard,border:`1px solid ${t.border}`,borderRadius:8,padding:"12px 18px",backdropFilter:"blur(12px)",WebkitBackdropFilter:"blur(12px)",animation:"floatCard 4s ease-in-out 1.1s infinite",zIndex:2}}>
-            <div style={{fontFamily:"'Space Mono',monospace",fontSize:20,fontWeight:700,color:t.accent}}>4yr</div>
-            <div style={{fontFamily:"'DM Sans',sans-serif",fontSize:11,color:t.textMuted,marginTop:2}}>Experience</div>
+            <div style={{fontFamily:"'Space Mono',monospace",fontSize:20,fontWeight:700,color:t.accent}}>3</div>
+            <div style={{fontFamily:"'DM Sans',sans-serif",fontSize:11,color:t.textMuted,marginTop:2}}>Major Projects</div>
           </div>
         </div>
       </div>
