@@ -467,7 +467,7 @@ const navigate=useNavigate()
             >Resume</button>
           </div>
           <div className="hero-bdgs" style={{display:"flex",gap:8,flexWrap:"wrap",marginTop:44,animation:"fadeInUp 0.6s ease 0.8s both"}}>
-            {["MongoDB","Express","React","Node.js","TypeScript","REST API"].map(tech=>(
+            {["MongoDB","Express","React","Node.js","REST API"].map(tech=>(
               <span key={tech} style={{fontFamily:"'Space Mono',monospace",fontSize:10,letterSpacing:0.8,color:t.textMuted,border:`1px solid ${t.border}`,borderRadius:2,padding:"4px 10px",background:t.accentGlow}}>{tech}</span>
             ))}
           </div>
