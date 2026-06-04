@@ -234,7 +234,8 @@ function LoadingScreen({ progress, done }) {
 function Navbar({ theme, t, toggleTheme, activeSection }) {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
-  const navItems = ["home","about","projects","pricing","contact"];
+const navigate=useNavigate()
+const navItems = ["home","about","pricing","contact"];
 
   useEffect(() => {
     const h = () => setScrolled(window.scrollY > 40);
@@ -285,23 +286,38 @@ function Navbar({ theme, t, toggleTheme, activeSection }) {
         </div>
 
         {/* Desktop nav */}
-        <div className="nav-links" style={{display:"flex",alignItems:"center",gap:28}}>
-          {navItems.map(item=>(
-            <button key={item} onClick={()=>goTo(item)} style={{
-              background:"none",border:"none",cursor:"pointer",
-              fontFamily:"'Space Mono',monospace",fontSize:12,letterSpacing:1.2,
-              color:activeSection===item?t.accent:t.textMuted,
-              textTransform:"uppercase",position:"relative",padding:"4px 0",
-              transition:"color 0.3s",
-            }}>
-              {item}
-              {activeSection===item&&(
-                <span style={{position:"absolute",bottom:-2,left:0,right:0,height:1,background:t.accent,boxShadow:`0 0 6px ${t.accent}`}}/>
-              )}
-            </button>
-          ))}
-        
-        </div>
+        {/* Desktop nav - projects button தனியா */}
+<div className="nav-links" style={{display:"flex",alignItems:"center",gap:28}}>
+  {navItems.map(item=>(
+    <button key={item} onClick={()=>goTo(item)} style={{
+      background:"none",border:"none",cursor:"pointer",
+      fontFamily:"'Space Mono',monospace",fontSize:12,letterSpacing:1.2,
+      color:activeSection===item?t.accent:t.textMuted,
+      textTransform:"uppercase",position:"relative",padding:"4px 0",
+      transition:"color 0.3s",
+    }}>
+      {item}
+      {activeSection===item&&(
+        <span style={{position:"absolute",bottom:-2,left:0,right:0,height:1,background:t.accent,boxShadow:`0 0 6px ${t.accent}`}}/>
+      )}
+    </button>
+  ))}
+  
+{/* Separate Projects Button - home section-ல் hide */}
+{activeSection !== "home" && (
+  <button onClick={()=>navigate("/projects")} style={{
+    background:`linear-gradient(135deg,${t.accent},${t.accentDim})`,
+    border:"none",borderRadius:4,padding:"7px 18px",
+    color:"#fff",fontFamily:"'Space Mono',monospace",
+    fontSize:11,fontWeight:700,letterSpacing:1,
+    cursor:"pointer",textTransform:"uppercase",
+    boxShadow:`0 3px 14px ${t.accentGlowStrong}`,transition:"all 0.3s ease",
+  }}
+    onMouseEnter={e=>{e.currentTarget.style.transform="translateY(-2px)";e.currentTarget.style.boxShadow=`0 6px 22px ${t.accentGlowStrong}`;}}
+    onMouseLeave={e=>{e.currentTarget.style.transform="translateY(0)";e.currentTarget.style.boxShadow=`0 3px 14px ${t.accentGlowStrong}`;}}
+  >Projects↗</button>
+)}
+</div>
   <button onClick={toggleTheme} style={{
             background:t.accentGlow,border:`1px solid ${t.border}`,
             borderRadius:20,padding:"6px 16px",cursor:"pointer",color:t.accent,
@@ -327,30 +343,38 @@ function Navbar({ theme, t, toggleTheme, activeSection }) {
         </button>
       </nav>
 
-      {/* Mobile menu overlay */}
-      {mobileOpen&&(
-        <div style={{
-          position:"fixed",inset:0,zIndex:199,
-          background:t.bg,
-          display:"flex",flexDirection:"column",
-          alignItems:"center",justifyContent:"center",gap:32,
-          // FIX 8: Prevent content from going under status bar on iOS
-          paddingTop:"env(safe-area-inset-top)",
-          paddingBottom:"env(safe-area-inset-bottom)",
-        }}>
-          {navItems.map(item=>(
-            <button key={item} onClick={()=>goTo(item)} style={{
-              background:"none",border:"none",cursor:"pointer",
-              fontFamily:"'Space Mono',monospace",fontSize:22,letterSpacing:3,
-              color:activeSection===item?t.accent:t.text,
-              textTransform:"uppercase",
-              // FIX 9: Larger tap targets on mobile
-              padding:"8px 24px",
-            }}>{item}</button>
-          ))}
-       
-        </div>
-      )}
+  
+    {/* Mobile menu - projects button தனியா */}
+{mobileOpen&&(
+  <div style={{
+    position:"fixed",inset:0,zIndex:199,
+    background:t.bg,
+    display:"flex",flexDirection:"column",
+    alignItems:"center",justifyContent:"center",gap:32,
+    paddingTop:"env(safe-area-inset-top)",
+    paddingBottom:"env(safe-area-inset-bottom)",
+  }}>
+    {navItems.map(item=>(
+      <button key={item} onClick={()=>goTo(item)} style={{
+        background:"none",border:"none",cursor:"pointer",
+        fontFamily:"'Space Mono',monospace",fontSize:22,letterSpacing:3,
+        color:activeSection===item?t.accent:t.text,
+        textTransform:"uppercase",
+        padding:"8px 24px",
+      }}>{item}</button>
+    ))}
+
+    {/* Mobile - Separate Projects Button */}
+    <button onClick={()=>{navigate("/projects");setMobileOpen(false);}} style={{
+      background:`linear-gradient(135deg,${t.accent},${t.accentDim})`,
+      border:"none",borderRadius:4,padding:"12px 36px",
+      color:"#fff",fontFamily:"'Space Mono',monospace",
+      fontSize:18,fontWeight:700,letterSpacing:3,
+      cursor:"pointer",textTransform:"uppercase",
+      boxShadow:`0 4px 20px ${t.accentGlowStrong}`,
+    }}>PROJECTS ↗</button>
+  </div>
+)}
     </>
   );
 }
@@ -362,7 +386,7 @@ function HeroSection({ t }) {
   const [rIdx,setRIdx] = useState(0);
   const [cIdx,setCIdx] = useState(0);
   const [del,setDel] = useState(false);
-
+const navigate=useNavigate()
   useEffect(() => {
     const cur = roles[rIdx];
     const id = setTimeout(() => {
@@ -433,7 +457,7 @@ function HeroSection({ t }) {
             Crafting scalable, production-ready web apps with MongoDB, Express, React &amp; Node.js. From pixel-perfect UI to robust APIs — I build digital products that perform.
           </p>
           <div className="hero-btns" style={{display:"flex",gap:14,flexWrap:"wrap",animation:"fadeInUp 0.6s ease 0.7s both"}}>
-            <button onClick={()=>goTo("projects")} style={{background:`linear-gradient(135deg,${t.accent},${t.accentDim})`,border:"none",borderRadius:4,padding:"13px 30px",color:"#fff",fontFamily:"'Space Mono',monospace",fontSize:12,fontWeight:700,letterSpacing:1,cursor:"pointer",textTransform:"uppercase",boxShadow:`0 4px 22px ${t.accentGlowStrong}`,transition:"all 0.3s ease"}}
+            <button onClick={()=>navigate("/projects")} style={{background:`linear-gradient(135deg,${t.accent},${t.accentDim})`,border:"none",borderRadius:4,padding:"13px 30px",color:"#fff",fontFamily:"'Space Mono',monospace",fontSize:12,fontWeight:700,letterSpacing:1,cursor:"pointer",textTransform:"uppercase",boxShadow:`0 4px 22px ${t.accentGlowStrong}`,transition:"all 0.3s ease"}}
               onMouseEnter={e=>{e.currentTarget.style.transform="translateY(-2px)";e.currentTarget.style.boxShadow=`0 8px 32px ${t.accentGlowStrong}`;}}
               onMouseLeave={e=>{e.currentTarget.style.transform="translateY(0)";e.currentTarget.style.boxShadow=`0 4px 22px ${t.accentGlowStrong}`;}}
             >View Projects</button>
@@ -590,63 +614,15 @@ function ProjectCard({ p, i, t, hov, setHov }) {
   );
 }
 
-function ProjectsSection({t}){
-  const [hov,setHov]=useState(null);
-  const navigate= useNavigate();
-  const [showAll,setShowAll]=useState(true);
-  const visibleProjects = showAll ? PROJECTS : PROJECTS.slice(0,3);
 
-  return (
-   <section id="projects" className="sec-pad" style={{padding:"110px 40px",background:t.bg,position:"relative"}}>
-  <SectionDivider t={t}/>
-  <div style={{maxWidth:1200,margin:"0 auto"}}>
-    <SectionHeader number="02" eyebrow="WHAT I'VE BUILT" title="Selected" accent="Projects" t={t}/>
-    
-    <div className="proj-grid" style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:22}}>
-      {visibleProjects.map((p,i)=>(
-        <ProjectCard key={p.title} p={p} i={i} t={t} hov={hov} setHov={setHov}/>
-      ))}
-    </div>
-
-    {/* View Projects Button Section */}
-    <div className="reveal reveal-up" style={{textAlign:"center", marginTop:52}}>
-      <button 
-        onClick={() => navigate('/projects')}
-        style={{
-          padding: "14px 28px",
-          backgroundColor: "transparent",
-          color: t.accent || "#fff", // Based on your theme
-          border: `1px solid ${t.accent || "#fff"}`,
-          borderRadius: "4px",
-          fontSize: "14px",
-          fontWeight: "600",
-          cursor: "pointer",
-          transition: "all 0.3s ease",
-          textTransform: "uppercase",
-          letterSpacing: "1px"
-        }}
-        onMouseEnter={(e) => {
-          e.target.style.background = t.accentAlpha || "rgba(255,255,255,0.1)";
-        }}
-        onMouseLeave={(e) => {
-          e.target.style.background = "transparent";
-        }}
-      >
-        View All Projects
-      </button>
-    </div>
-  </div>
-</section>  
-  );
-}
 
 // ─── Pricing ──────────────────────────────────────────────────────────────────
 const PLANS=[
-  {name:"landing Page",price:"₹4,000",period:"/ project",badge:null,
+  {name:"landing Page",price:"₹2,000",period:"/ project",badge:null,
    features:["Upto 5 pages website","Responsive design","Basic React frontend","Contact form integration","1 revision round (within 1 week)","5-day delivery"],cta:"Get Started"},
-  {name:"Full Stack",price:"₹10,000",period:"/ project",badge:"BEST CHOICE",
+  {name:"Full Stack",price:"₹5,000",period:"/ project",badge:"BEST CHOICE",
    features:["Full MERN stack app","REST API development","MongoDB database design","JWT Authentication","Admin dashboard","3 revision rounds (within 1 month)","14-day delivery","1 month free support"],cta:"Start Project"},
-  {name:"Portfolio",price:"₹2000",period:"/ project",badge:null,
+  {name:"Portfolio",price:"₹1,000",period:"/ project",badge:null,
    features:["Single Page Website","Tailwind Design","Basic React Frontend","Contact form integration","Use netlify for Hosting (free)"],cta:"Let's Talk"},
 ];
 
@@ -843,7 +819,7 @@ export default function FreeLance() {
         <Navbar theme={themeKey} t={t} toggleTheme={()=>setThemeKey(k=>k==="dark"?"light":"dark")} activeSection={activeSection}/>
         <HeroSection t={t}/>
         <AboutSection t={t}/>
-        <ProjectsSection t={t}/>
+       
         <PricingSection t={t}/>
         <ContactSection t={t}/>
         <Footer t={t}/>
